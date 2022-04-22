@@ -51,7 +51,7 @@ void AddSwagger(IServiceCollection services)
 // add services to DI container
 {
     var services = builder.Services;
-    // use sql server db in production and sqlite db in development
+
     services.AddDbContext<DataContext>();
  
  
