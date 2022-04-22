@@ -13,7 +13,6 @@ public class AutoMapperProfile : Profile
 
         // RegisterRequest -> User
         CreateMap<RegisterRequest, User>();
-        
 
         // UpdateRequest -> User
         CreateMap<UpdateRequest, User>()

@@ -2,10 +2,10 @@ namespace WebApi.Services;
 
 using AutoMapper;
 using BCrypt.Net;
-using WebApi.Authorization;
-using WebApi.Entities;
-using WebApi.Helpers;
-using WebApi.Models.Users;
+using Authorization;
+using Entities;
+using Helpers;
+using Models.Users;
 
 public interface IUserService
 {
