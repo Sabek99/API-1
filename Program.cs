@@ -105,6 +105,6 @@ using (var scope = app.Services.CreateScope())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "SuperMate API");
     });
-    app.Run("https://localhost:5000");
+    app.Run("http://localhost:5000");
+    
 }
-
