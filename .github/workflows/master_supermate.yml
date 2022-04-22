@@ -1,4 +1,4 @@
-name: Deploy Laravel app to Heroku - SuperMate
+name: Deploy .net app to Heroku - SuperMate
 
 on:
   push:
