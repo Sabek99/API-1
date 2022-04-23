@@ -5,6 +5,8 @@ using WebApi.Helpers;
 using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 void AddSwagger(IServiceCollection services)
 {
     services.AddSwaggerGen(c =>
@@ -49,12 +51,13 @@ void AddSwagger(IServiceCollection services)
     });
 }
 // add services to DI container
-{
-    var services = builder.Services;
+
+
+var services = builder.Services;
 
     services.AddDbContext<DataContext>();
  
- 
+    services.AddEndpointsApiExplorer();
     services.AddCors();
     services.AddControllers();
     AddSwagger(services);
@@ -72,11 +75,17 @@ void AddSwagger(IServiceCollection services)
     {
         options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
     });
-   
-}
 
 
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "SuperMate API");
+    });
+}
 
 // migrate any database changes on startup (includes initial db creation)
 using (var scope = app.Services.CreateScope())
@@ -98,13 +107,12 @@ using (var scope = app.Services.CreateScope())
 
     // custom jwt auth middleware
     app.UseMiddleware<JwtMiddleware>();
-
+    app.UseCors("Open");
     app.MapControllers();
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "SuperMate API");
-    });
-    app.Run("https://localhost:5000");
-    
+    app.UseHttpsRedirection();
+    app.UseAuthorization();
+    app.UseRouting();
+    app.MapControllers();
+    app.Run();
 }
+    
