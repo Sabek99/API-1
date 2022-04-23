@@ -63,7 +63,7 @@ public class UserService : IUserService
     {
         // validate
         if (_context.AspNetUsers.Any(x => x.Email == model.Email))
-            throw new AppException("Username '" + model.Email + "' is already taken");
+            throw new AppException("Email '" + model.Email + "' is already taken");
         if (_context.AspNetUsers.Any(x => x.UserName == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
         
