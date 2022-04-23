@@ -1,6 +1,8 @@
 namespace WebApi.Models.Users;
 
-public class AuthenticateResponse 
+public class RegisterResponse 
 {
     public string Token { get; set; }
+
+
 }

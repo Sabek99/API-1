@@ -10,9 +10,10 @@ using Models.Users;
 public interface IUserService
 {
     AuthenticateResponse Authenticate(AuthenticateRequest model);
+    RegisterResponse Register(RegisterRequest model);
     IEnumerable<User> GetAll();
     User GetById(int id);
-    void Register(RegisterRequest model);
+    // void Register(RegisterRequest model);
     void Update(int id, UpdateRequest model);
     void Delete(int id);
 }
@@ -35,7 +36,7 @@ public class UserService : IUserService
 
     public AuthenticateResponse Authenticate(AuthenticateRequest model)
     {
-        var user = _context.AspNetUsers.SingleOrDefault(x => x.UserName == model.Username);
+        var user = _context.AspNetUsers.SingleOrDefault(x => x.Email == model.Email);
 
         // validate
         if (user == null || !BCrypt.Verify(model.Password, user.PasswordHash))
@@ -46,6 +47,7 @@ public class UserService : IUserService
         response.Token = _jwtUtils.GenerateToken(user);
         return response;
     }
+    
 
     public IEnumerable<User> GetAll()
     {
@@ -57,11 +59,14 @@ public class UserService : IUserService
         return getUser(id);
     }
 
-    public void Register(RegisterRequest model)
+    public RegisterResponse Register(RegisterRequest model)
     {
         // validate
+        if (_context.AspNetUsers.Any(x => x.Email == model.Email))
+            throw new AppException("Username '" + model.Email + "' is already taken");
         if (_context.AspNetUsers.Any(x => x.UserName == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
+        
 
         // map model to new user object
         var user = _mapper.Map<User>(model);
@@ -72,6 +77,12 @@ public class UserService : IUserService
         // save user
         _context.AspNetUsers.Add(user);
         _context.SaveChanges();
+        
+        // return user's token to client 
+        var response = _mapper.Map<RegisterResponse>(user);
+        response.Token = _jwtUtils.GenerateToken(user);
+        return response;
+        
     }
 
     public void Update(int id, UpdateRequest model)

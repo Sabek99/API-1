@@ -39,8 +39,8 @@ public class UsersController : ControllerBase
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest model)
     {
-        _userService.Register(model);
-        return Ok(new { message = "Registration successful" });
+        var response = _userService.Register(model);
+        return Ok(response);
     }
 
     [HttpGet]
@@ -61,13 +61,13 @@ public class UsersController : ControllerBase
     public IActionResult Update(int id, UpdateRequest model)
     {
         _userService.Update(id, model);
-        return Ok(new { message = "User updated successfully" });
+        return Ok(new { message = "User updated successfully"});
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
         _userService.Delete(id);
-        return Ok(new { message = "User deleted successfully" });
+        return Ok(new { message = "User deleted successfully"});
     }
 }
