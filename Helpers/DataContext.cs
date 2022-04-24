@@ -37,6 +37,11 @@ public class DataContext : DbContext
             .WithMany(qt => qt.QuestionTags)
             .HasForeignKey(q => q.TagId);
         
+        //User Question one to many relation
+        modelBuilder.Entity<Question>()
+            .HasOne(u => u.User)
+            .WithMany(q => q.Questions);
+
     }
 
     public DbSet<User> Users { get; set; }
