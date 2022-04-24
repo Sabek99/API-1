@@ -20,14 +20,29 @@ public class DataContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //Question & answer one to many relation 
         modelBuilder.Entity<Answer>()
             .HasOne(a => a.Question)
             .WithMany(b => b.Answers);
+        
+        
+        //Question and Tag many to many relation 
+        modelBuilder.Entity<QuestionTag>()
+            .HasOne(q => q.Tag)
+            .WithMany(qt => qt.QuestionTags)
+            .HasForeignKey(q => q.QuestionId);
+        
+        modelBuilder.Entity<QuestionTag>()
+            .HasOne(t => t.Tag)
+            .WithMany(qt => qt.QuestionTags)
+            .HasForeignKey(q => q.TagId);
+        
     }
 
     public DbSet<User> Users { get; set; }
     public DbSet<Tag> Tags { get; set; }   
     public DbSet<Question> Questions { get; set; }   
-    public DbSet<Answer> Answers { get; set; }   
+    public DbSet<Answer> Answers { get; set; }
+    public DbSet<QuestionTag> QuestionTags { get; set; }
     
 }

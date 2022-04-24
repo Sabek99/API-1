@@ -9,5 +9,5 @@ public class Tag
     public string Description { get; set; }
     
     //navigation properties 
-    public ICollection<Question> Questions { get; set; }
+    public ICollection<QuestionTag> QuestionTags { get; set; }
 }
