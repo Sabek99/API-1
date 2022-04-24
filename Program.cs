@@ -3,9 +3,11 @@ using Microsoft.OpenApi.Models;
 using WebApi.Authorization;
 using WebApi.Helpers;
 using WebApi.Services;
+using WebApi.Services.TageServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddTransient<ITagService, TagService>();
 
 void AddSwagger(IServiceCollection services)
 {
@@ -51,12 +53,12 @@ void AddSwagger(IServiceCollection services)
     });
 }
 // add services to DI container
-
+    
 
 var services = builder.Services;
 
     services.AddDbContext<DataContext>();
- 
+    
     services.AddEndpointsApiExplorer();
     services.AddCors();
     services.AddControllers();

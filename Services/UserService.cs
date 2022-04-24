@@ -7,17 +7,6 @@ using Entities;
 using Helpers;
 using Models.Users;
 
-public interface IUserService
-{
-    AuthenticateResponse Authenticate(AuthenticateRequest model);
-    RegisterResponse Register(RegisterRequest model);
-    IEnumerable<User> GetAll();
-    User GetById(int id);
-    // void Register(RegisterRequest model);
-    void Update(int id, UpdateRequest model);
-    void Delete(int id);
-}
-
 public class UserService : IUserService
 {
     private DataContext _context;
@@ -36,7 +25,7 @@ public class UserService : IUserService
 
     public AuthenticateResponse Authenticate(AuthenticateRequest model)
     {
-        var user = _context.AspNetUsers.SingleOrDefault(x => x.Email == model.Email);
+        var user = _context.Users.SingleOrDefault(x => x.Email == model.Email);
 
         // validate
         if (user == null || !BCrypt.Verify(model.Password, user.PasswordHash))
@@ -51,7 +40,7 @@ public class UserService : IUserService
 
     public IEnumerable<User> GetAll()
     {
-        return _context.AspNetUsers;
+        return _context.Users;
     }
 
     public User GetById(int id)
@@ -62,9 +51,9 @@ public class UserService : IUserService
     public RegisterResponse Register(RegisterRequest model)
     {
         // validate
-        if (_context.AspNetUsers.Any(x => x.Email == model.Email))
+        if (_context.Users.Any(x => x.Email == model.Email))
             throw new AppException("Email '" + model.Email + "' is already taken");
-        if (_context.AspNetUsers.Any(x => x.UserName == model.Username))
+        if (_context.Users.Any(x => x.UserName == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
         
 
@@ -75,7 +64,7 @@ public class UserService : IUserService
         user.PasswordHash = BCrypt.HashPassword(model.Password);
 
         // save user
-        _context.AspNetUsers.Add(user);
+        _context.Users.Add(user);
         _context.SaveChanges();
         
         // return user's token to client 
@@ -90,7 +79,7 @@ public class UserService : IUserService
         var user = getUser(id);
 
         // validate
-        if (model.Username != user.UserName && _context.AspNetUsers.Any(x => x.UserName == model.Username))
+        if (model.Username != user.UserName && _context.Users.Any(x => x.UserName == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
 
         // hash password if it was entered
@@ -99,14 +88,14 @@ public class UserService : IUserService
 
         // copy model to user and save
         _mapper.Map(model, user);
-        _context.AspNetUsers.Update(user);
+        _context.Users.Update(user);
         _context.SaveChanges();
     }
 
     public void Delete(int id)
     {
         var user = getUser(id);
-        _context.AspNetUsers.Remove(user);
+        _context.Users.Remove(user);
         _context.SaveChanges();
     }
 
@@ -114,7 +103,7 @@ public class UserService : IUserService
 
     private User getUser(int id)
     {
-        var user = _context.AspNetUsers.Find(id);
+        var user = _context.Users.Find(id);
         if (user == null) throw new KeyNotFoundException("User not found");
         return user;
     }
