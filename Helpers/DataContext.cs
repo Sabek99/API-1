@@ -41,6 +41,16 @@ public class DataContext : DbContext
         modelBuilder.Entity<Question>()
             .HasOne(u => u.User)
             .WithMany(q => q.Questions);
+        
+        //User Answer one to many relation
+        modelBuilder.Entity<Answer>()
+            .HasOne(u => u.User)
+            .WithMany(a => a.Answers);
+        
+        //User Tag one to many relation 
+        modelBuilder.Entity<Tag>()
+            .HasOne(u => u.User)
+            .WithMany(a => a.Tags);
 
     }
 

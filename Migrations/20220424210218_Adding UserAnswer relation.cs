@@ -4,25 +4,25 @@
 
 namespace WebApi.Migrations
 {
-    public partial class AddingUserQuestionrelation : Migration
+    public partial class AddingUserAnswerrelation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
                 name: "UserId",
-                table: "Questions",
+                table: "Answers",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Questions_UserId",
-                table: "Questions",
+                name: "IX_Answers_UserId",
+                table: "Answers",
                 column: "UserId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Questions_Users_UserId",
-                table: "Questions",
+                name: "FK_Answers_Users_UserId",
+                table: "Answers",
                 column: "UserId",
                 principalTable: "Users",
                 principalColumn: "Id",
@@ -32,16 +32,16 @@ namespace WebApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Questions_Users_UserId",
-                table: "Questions");
+                name: "FK_Answers_Users_UserId",
+                table: "Answers");
 
             migrationBuilder.DropIndex(
-                name: "IX_Questions_UserId",
-                table: "Questions");
+                name: "IX_Answers_UserId",
+                table: "Answers");
 
             migrationBuilder.DropColumn(
                 name: "UserId",
-                table: "Questions");
+                table: "Answers");
         }
     }
 }
