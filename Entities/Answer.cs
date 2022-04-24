@@ -10,4 +10,8 @@ public class Answer
     public DateTime UpdateTime { get; set; }
     public bool IsBanned { get; set; }
     public bool IsVerified { get; set; }
+    
+    //navigation properties 
+    public int QuestionId { get; set; }
+    public Question Question { get; set; }
 }

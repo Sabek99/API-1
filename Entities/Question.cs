@@ -11,4 +11,7 @@ public class Question
     public DateTime UpdateTime { get; set; }
     public bool IsBanned { get; set; }
    
+    //navigation properties 
+    public ICollection<Answer> Answers { get; set; }
+    public ICollection<Tag> Tags { get; set; }
 }
