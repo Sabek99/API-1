@@ -31,6 +31,13 @@ public class UsersController : ControllerBase
         var response = _userService.Authenticate(model);
         return Ok(response);
     }
+    
+    [HttpPost("signout")]
+    public IActionResult signOut(int id)
+    {
+       _userService.signOut(id);
+        return Ok(new { message = "Signed out successfully, hope to see you soon!" });
+    }
 
     [AllowAnonymous]
     [HttpPost("register")]
