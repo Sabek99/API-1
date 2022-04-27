@@ -15,3 +15,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "supermate-v2"
           heroku_email: "barbrothersegy@gmail.com"
+          healthcheck: "https://supermate-v2.herokuapp.com/swagger/index.html"
+          rollbackonhealthcheckfailed: true
