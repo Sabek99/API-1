@@ -5,25 +5,50 @@
     <projectFile profileName="GloboTicket.TicketManagement.Api">WebApi.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be927806-3aa7-438e-b42d-2f2a3d8cbe3e" name="Changes" comment="add logout feature">
+    <list default="true" id="be927806-3aa7-438e-b42d-2f2a3d8cbe3e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebApI/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebApI/.idea/aws.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebApI/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebApI/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApI.sln" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.API_NourNafea.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.API_NourNafea.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220422113227_InitialCreate.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220422113227_InitialCreate.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424163409_Adding Entities without relations.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424163409_Adding Entities without relations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424194658_adding Question&amp; Answer relation.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424194658_adding Question&amp; Answer relation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424201216_Adding QuestionTag relation.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424201216_Adding QuestionTag relation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424205320_Adding UserQuestion relation.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424205320_Adding UserQuestion relation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424210218_Adding UserAnswer relation.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424210218_Adding UserAnswer relation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424211457_Adding All entities and relations.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220424211457_Adding All entities and relations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220426234611_addToken.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/20220426234611_addToken.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Authorization/AllowAnonymousAttribute.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Authorization/AuthorizeAttribute.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Authorization/JwtMiddleware.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Authorization/JwtUtils.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/TagController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/UsersController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entities/Answer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entities/Question.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entities/QuestionTag.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entities/Tag.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entities/User.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Helpers/AppException.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Helpers/AppSettings.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Helpers/AutoMapperProfile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Helpers/DataContext.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Helpers/ErrorHandlerMiddleware.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220427031111_addToken.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220427031111_addToken.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Migrations/DataContextModelSnapshot.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Tags/BaseTagRequest.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Users/AuthenticateRequest.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Users/AuthenticateResponse.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Users/RegisterRequest.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Users/RegisterResponse.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Users/UpdateRequest.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Properties/launchSettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/IUserService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/TageServices/ITagService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/TageServices/TagService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/UserService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApi.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/appsettings.Development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/omnisharp.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,19 +67,22 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="Toolset" />
+  </component>
   <component name="ProjectId" id="28BWCO5au2zKfxEOCivDyyFqv8S" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.WebApi: GloboTicket.TicketManagement.Api">
     <configuration name="WebApi: GloboTicket.TicketManagement.Api" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApi.csproj" />
@@ -102,7 +130,8 @@
       <workItem from="1650690339919" duration="211000" />
       <workItem from="1650850836073" duration="331000" />
       <workItem from="1650851247654" duration="5419000" />
-      <workItem from="1650980475185" duration="13989000" />
+      <workItem from="1650980475185" duration="17521000" />
+      <workItem from="1651097401383" duration="751000" />
     </task>
     <task id="LOCAL-00001" summary="Add logout feature">
       <created>1651026681139</created>
