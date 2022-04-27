@@ -90,7 +90,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseRouting();
 app.UseAuthentication();
@@ -117,7 +117,7 @@ using (var scope = app.Services.CreateScope())
     app.UseMiddleware<JwtMiddleware>();
     app.UseCors("Open");
     app.MapControllers();
-    app.UseHttpsRedirection();
+   // app.UseHttpsRedirection();
     app.UseAuthorization();
     app.UseRouting();
     app.MapControllers();
