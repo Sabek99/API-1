@@ -27,7 +27,7 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include=".github\workflows\master_supermate.yml" />
+      <Content Include="WebApI.sln" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models\Answers" />
