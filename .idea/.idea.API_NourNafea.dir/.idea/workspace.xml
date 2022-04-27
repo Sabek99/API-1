@@ -5,21 +5,33 @@
     <projectFile profileName="GloboTicket.TicketManagement.Api">WebApi.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be927806-3aa7-438e-b42d-2f2a3d8cbe3e" name="Changes" comment="">
+    <list default="true" id="be927806-3aa7-438e-b42d-2f2a3d8cbe3e" name="Changes" comment="add logout feature">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.API_NourNafea.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.API_NourNafea.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Authorization/AuthorizeAttribute.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Authorization/AuthorizeAttribute.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/UsersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/UsersController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entities/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/User.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Migrations/DataContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Migrations/DataContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Users/AuthenticateResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Users/AuthenticateResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Services/IUserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/IUserService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/UserService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApi.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApi.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220422113227_InitialCreate.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220422113227_InitialCreate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424163409_Adding Entities without relations.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424163409_Adding Entities without relations.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424194658_adding Question&amp; Answer relation.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424194658_adding Question&amp; Answer relation.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424201216_Adding QuestionTag relation.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424201216_Adding QuestionTag relation.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424205320_Adding UserQuestion relation.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424205320_Adding UserQuestion relation.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424210218_Adding UserAnswer relation.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424210218_Adding UserAnswer relation.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424211457_Adding All entities and relations.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220424211457_Adding All entities and relations.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220426234611_addToken.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220426234611_addToken.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/DataContextModelSnapshot.cs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="WARN_ABOUT_CRLF" value="false" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d23ddb881ebc4d4290991a839764b5827600/47/06e2b512/IConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
@@ -74,6 +86,10 @@
         <option name="Build" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue=".NET Launch Settings Profile.WebApi: GloboTicket.TicketManagement.Api" />
+      <item itemvalue=".NET Launch Settings Profile.WebApi: IIS Express" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -86,8 +102,23 @@
       <workItem from="1650690339919" duration="211000" />
       <workItem from="1650850836073" duration="331000" />
       <workItem from="1650851247654" duration="5419000" />
-      <workItem from="1650980475185" duration="10763000" />
+      <workItem from="1650980475185" duration="13989000" />
     </task>
+    <task id="LOCAL-00001" summary="Add logout feature">
+      <created>1651026681139</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1651026681139</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add logout feature">
+      <created>1651026755005</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1651026755005</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,5 +140,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Add logout feature" />
+    <MESSAGE value="add logout feature" />
+    <option name="LAST_COMMIT_MESSAGE" value="add logout feature" />
   </component>
 </project>
