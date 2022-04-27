@@ -34,6 +34,9 @@ public class UserService : IUserService
         // authentication successful
         var response = _mapper.Map<AuthenticateResponse>(user);
         response.Token = _jwtUtils.GenerateToken(user);
+        user.Token= response.Token;
+        _context.Users.Update(user);
+        _context.SaveChanges();
         return response;
     }
     
@@ -62,16 +65,18 @@ public class UserService : IUserService
 
         // hash password
         user.PasswordHash = BCrypt.HashPassword(model.Password);
+        
+        // generate token
+        var response = _mapper.Map<RegisterResponse>(user);
+        response.Token = _jwtUtils.GenerateToken(user);
+        user.Token= response.Token;
 
         // save user
         _context.Users.Add(user);
         _context.SaveChanges();
         
         // return user's token to client 
-        var response = _mapper.Map<RegisterResponse>(user);
-        response.Token = _jwtUtils.GenerateToken(user);
         return response;
-        
     }
 
     public void Update(int id, UpdateRequest model)
@@ -106,5 +111,12 @@ public class UserService : IUserService
         var user = _context.Users.Find(id);
         if (user == null) throw new KeyNotFoundException("User not found");
         return user;
+    }
+    public void signOut(int id)
+    {
+        var user = getUser(id);
+        user.Token = null;
+        _context.Users.Update(user);
+        _context.SaveChanges();
     }
 }
