@@ -27,7 +27,7 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="WebApI.sln" />
+      <Content Include="WebApi.sln" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models\Answers" />
