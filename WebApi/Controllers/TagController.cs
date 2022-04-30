@@ -24,16 +24,23 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTags()
         {
-            var tags = await _tagService.GetAllTags();
+            var tags = _tagService.GetAllTags();
+            if (tags == null )
+                return NotFound("There are no tags");
+                
+            
             return Ok(tags);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTagById(int id)
         {
-            var tag = await _tagService.GetTagById(id);
-            if (tag == null)
-                return NotFound("No tag was found");
+            var _tag =await _tagService.CheckIfTagExists(id);
+            
+            if (_tag == null)
+                return NotFound("Tag is not found");
+            
+            var tag = _tagService.GetTagById(id);
             return Ok(tag);
         }
 
@@ -54,7 +61,7 @@ namespace WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTag(int id, BaseTagRequest model)
         {
-           var tag = await _tagService.GetTagById(id);
+           var tag = await _tagService.CheckIfTagExists(id);
 
            if (tag == null)
                return NotFound($"No tag was found with ID {id}");
@@ -68,7 +75,7 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTag(int id)
         {
-            var tag = await _tagService.GetTagById(id);
+            var tag = await _tagService.CheckIfTagExists(id);
             if (tag == null)
                 return NotFound($"No tag was found with ID {id}");
 
