@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Configuration;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
 using WebApi.Authorization;
 using WebApi.Helpers;
@@ -57,26 +60,30 @@ void AddSwagger(IServiceCollection services)
 
 var services = builder.Services;
 
-    services.AddDbContext<DataContext>();
-    
-    services.AddEndpointsApiExplorer();
-    services.AddCors();
-    services.AddControllers();
-    AddSwagger(services);
-    services.AddSwaggerGen();
-    // configure automapper with all automapper profiles from this assembly
-    services.AddAutoMapper(typeof(Program));
+services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    // configure strongly typed settings object
-    services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
-    // configure DI for application services
-    services.AddScoped<IJwtUtils, JwtUtils>();
-    services.AddScoped<IUserService, UserService>();
-    services.AddCors(options =>
-    {
-        options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-    });
+services.AddEndpointsApiExplorer();
+services.AddCors();
+services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+services.AddControllers();
+AddSwagger(services);
+services.AddSwaggerGen();
+// configure automapper with all automapper profiles from this assembly
+services.AddAutoMapper(typeof(Program));
+
+// configure strongly typed settings object
+services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
+// configure DI for application services
+services.AddScoped<IJwtUtils, JwtUtils>();
+services.AddScoped<IUserService, UserService>();
+services.AddCors(options =>
+{
+    options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
 
 
 var app = builder.Build();
@@ -95,11 +102,11 @@ app.UseRouting();
 app.UseAuthentication();
 
 // migrate any database changes on startup (includes initial db creation)
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();    
-    dataContext.Database.Migrate();
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();    
+//     dataContext.Database.Migrate();
+// }
 
 // configure HTTP request pipeline
 {

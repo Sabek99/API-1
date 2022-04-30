@@ -9,8 +9,8 @@ public interface IUserService
     RegisterResponse Register(RegisterRequest model);
     IEnumerable<User> GetAll();
     User GetById(int id);
-    // void Register(RegisterRequest model);
+    //void Register(RegisterRequest model);
     void Update(int id, UpdateRequest model);
     void Delete(int id);
-    void signOut(int id);
+    void signOut();
 }
