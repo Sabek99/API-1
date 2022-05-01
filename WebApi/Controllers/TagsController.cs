@@ -6,19 +6,22 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Entities;
 using WebApi.Models.Tags;
+using WebApi.Services;
 using WebApi.Services.TageServices;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TagController : ControllerBase
+    public class TagsController : ControllerBase
     {
         private readonly ITagService _tagService;
+        private readonly IUserService _userService;
 
-        public TagController(ITagService tagService)
+        public TagsController(ITagService tagService, IUserService userService)
         {
             _tagService = tagService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -32,27 +35,28 @@ namespace WebApi.Controllers
             return Ok(tags);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetTagById(int id)
+        [HttpGet("{TagId}")]
+        public async Task<IActionResult> GetTagById(int tagId)
         {
-            var checkTag =await _tagService.CheckIfTagExists(id);
+            var checkTag =await _tagService.CheckIfTagExists(tagId);
             
             if (checkTag == null)
                 return NotFound("Tag is not found");
             
-            var tag = _tagService.GetTagById(id);
+            var tag = _tagService.GetTagById(tagId);
             return Ok(tag);
         }
 
-        [HttpPost("CreateTag {userId}")]
+        [HttpPost("{userId}")]
         public async Task<IActionResult> CreateTag(int userId,BaseTagRequest model)
         {
+            var user = _userService.GetById(userId);
             if (string.IsNullOrWhiteSpace(model.Name)) return BadRequest("tag name is required!");
             var tag =  new Tag
             {
                 Name = model.Name,
                 Description = model.Description,
-                UserId = userId
+                UserId = user.Id
             };
 
             await _tagService.CreateTag(tag);
@@ -77,10 +81,10 @@ namespace WebApi.Controllers
            return Ok(_tagService.GetTagById(tag.Id));
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTag(int id)
+        [HttpDelete("{tagId}")]
+        public async Task<IActionResult> DeleteTag(int tagId)
         {
-            var tag = await _tagService.CheckIfTagExists(id);
+            var tag = await _tagService.CheckIfTagExists(tagId);
             if (tag == null)
                 return NotFound("Tag is not found");
 
