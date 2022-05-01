@@ -35,7 +35,7 @@ public class UsersController : ControllerBase
     [HttpPost("signout")]
     public IActionResult signOut()
     {
-        _userService.signOut();
+        _userService.SignOut();
         return Ok(new { message = "Signed out successfully, hope to see you soon!" });
     }
 

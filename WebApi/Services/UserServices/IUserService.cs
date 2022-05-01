@@ -12,5 +12,5 @@ public interface IUserService
     //void Register(RegisterRequest model);
     void Update(int id, UpdateRequest model);
     void Delete(int id);
-    void signOut();
+    void SignOut();
 }

@@ -66,7 +66,7 @@ public class UserService : IUserService
 
     public User GetById(int id)
     {
-        return getUser(id);
+        return GetUser(id);
     }
 
     public RegisterResponse Register(RegisterRequest model)
@@ -98,7 +98,7 @@ public class UserService : IUserService
 
     public void Update(int id, UpdateRequest model)
     {
-        var user = getUser(id);
+        var user = GetUser(id);
 
         // validate
         if (model.Username != user.UserName && _context.AspNetUsers.Any(x => x.UserName == model.Username))
@@ -116,24 +116,28 @@ public class UserService : IUserService
 
     public void Delete(int id)
     {
-        var user = getUser(id);
+        var user = GetUser(id);
         _context.AspNetUsers.Remove(user);
         _context.SaveChanges();
     }
 
     // helper methods
 
-    private User getUser(int id)
+    private User GetUser(int id)
     {
         var user = _context.AspNetUsers.Find(id);
         if (user == null) throw new KeyNotFoundException("User not found");
         return user;
     }
-    public void signOut()
+    public void SignOut()
     {
-        var user = (User)_httpContextAccessor.HttpContext.Items["User"];
-        user.Token = null;
-        _context.AspNetUsers.Update(user);
+        var user = (User) _httpContextAccessor.HttpContext?.Items["User"];
+        if (user != null)
+        {
+            user.Token = null;
+            _context.AspNetUsers.Update(user);
+        }
+
         _context.SaveChanges();
     }
     
