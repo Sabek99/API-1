@@ -14,23 +14,43 @@ public class TagService : ITagService
     {
         _context = context;
     }
-
-    public async Task<IEnumerable<Tag>> GetAllTags()
+    public async Task<Tag> CheckIfTagExists(int id) 
     {
         return await _context.Tags
-            .OrderBy(t => t.Name)
-            .ToListAsync();
+            .SingleOrDefaultAsync(t => t.Id == id); 
     }
 
-    public async Task<Tag> GetTagById(int id)
+    public IQueryable GetAllTags()
     {
-        return await _context.Tags
-            .SingleOrDefaultAsync(t => t.Id == id);
+        var query = from tag in _context.Tags
+            select new
+            {
+                tag_id = tag.Id,
+                tag_name = tag.Name,
+                tag_description = tag.Description,
+                number_of_questions = _context.QuestionTags.Count(n=>n.TagId == tag.Id)
+            };
+        return query;
+    }
+
+    public IQueryable GetTagById(int id)
+    {
+        var query = from tag in _context.Tags
+                .Where(t => t.Id == id)
+            select new
+            {
+                tag_id = tag.Id,
+                tag_name = tag.Name,
+                tag_description = tag.Description,
+                number_of_questions = _context.QuestionTags.Count(n=>n.TagId == tag.Id)
+            };
+        return query;
     }
 
     public async Task<Tag> CreateTag(Tag tag)
     {
         await _context.AddAsync(tag);
+        await _context.SaveChangesAsync();
         return tag;
     }
 
@@ -47,5 +67,6 @@ public class TagService : ITagService
         _context.SaveChanges();
         return tag;
     }
-    
+
+   
 }

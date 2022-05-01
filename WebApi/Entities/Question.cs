@@ -8,7 +8,7 @@ public class Question
     public string Title { get; set; }
     public string Body { get; set; }
     public DateTime CreationTime { get; set; }
-    public DateTime UpdateTime { get; set; }
+    public DateTime? UpdateTime { get; set; }
     public bool IsBanned { get; set; }
    
     //navigation properties 
