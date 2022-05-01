@@ -11,4 +11,5 @@ public class Tag
     //navigation properties 
     public ICollection<QuestionTag> QuestionTags { get; set; }
     public User User { get; set; }
+    public int UserId { get; set; }
 }

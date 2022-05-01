@@ -14,6 +14,11 @@ public class TagService : ITagService
     {
         _context = context;
     }
+    public async Task<Tag> CheckIfTagExists(int id) 
+    {
+        return await _context.Tags
+            .SingleOrDefaultAsync(t => t.Id == id); 
+    }
 
     public IQueryable GetAllTags()
     {
@@ -45,6 +50,7 @@ public class TagService : ITagService
     public async Task<Tag> CreateTag(Tag tag)
     {
         await _context.AddAsync(tag);
+        await _context.SaveChangesAsync();
         return tag;
     }
 
@@ -62,9 +68,5 @@ public class TagService : ITagService
         return tag;
     }
 
-    public async Task<Tag> CheckIfTagExists(int id)
-    {
-        return await _context.Tags
-        .SingleOrDefaultAsync(t => t.Id == id);
-    }
+   
 }

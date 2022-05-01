@@ -24,10 +24,10 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTags()
         {
-            var tags = _tagService.GetAllTags();
-            if (tags == null )
+            var tags =  _tagService.GetAllTags();
+
+            if (tags == null)
                 return NotFound("There are no tags");
-                
             
             return Ok(tags);
         }
@@ -35,41 +35,46 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTagById(int id)
         {
-            var _tag =await _tagService.CheckIfTagExists(id);
+            var checkTag =await _tagService.CheckIfTagExists(id);
             
-            if (_tag == null)
+            if (checkTag == null)
                 return NotFound("Tag is not found");
             
             var tag = _tagService.GetTagById(id);
             return Ok(tag);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateTag(BaseTagRequest model)
+        [HttpPost("CreateTag {userId}")]
+        public async Task<IActionResult> CreateTag(int userId,BaseTagRequest model)
         {
             if (string.IsNullOrWhiteSpace(model.Name)) return BadRequest("tag name is required!");
             var tag =  new Tag
             {
                 Name = model.Name,
-                Description = model.Description
+                Description = model.Description,
+                UserId = userId
             };
 
             await _tagService.CreateTag(tag);
-            return Ok(tag);
+            return Ok(_tagService.GetTagById(tag.Id));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTag(int id, BaseTagRequest model)
+        [HttpPut("{tagId}")]
+        public async Task<IActionResult> UpdateTag(int tagId, BaseTagRequest model)
         {
-           var tag = await _tagService.CheckIfTagExists(id);
+           var tag = await _tagService.CheckIfTagExists(tagId);
 
            if (tag == null)
-               return NotFound($"No tag was found with ID {id}");
+               return NotFound("Tag is not found");
+           
            tag.Name = model.Name;
            tag.Description = model.Description;
-
+           
+           if(string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.Description))
+               return BadRequest("tag name is required!"); 
+                   
            _tagService.UpdateTag(tag);
-           return Ok(tag);
+           return Ok(_tagService.GetTagById(tag.Id));
         }
 
         [HttpDelete("{id}")]
@@ -77,11 +82,11 @@ namespace WebApi.Controllers
         {
             var tag = await _tagService.CheckIfTagExists(id);
             if (tag == null)
-                return NotFound($"No tag was found with ID {id}");
+                return NotFound("Tag is not found");
 
             _tagService.DeleteTag(tag);
 
-            return Ok(tag);
+            return Ok("Tag has been deleted");
         }
     }
 }
