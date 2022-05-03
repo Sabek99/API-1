@@ -28,8 +28,6 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models\Answers" />
-      <Folder Include="Models\Questions" />
       <Folder Include="Services\AnswerServices" />
-      <Folder Include="Services\QuestionServices" />
     </ItemGroup>
 </Project>

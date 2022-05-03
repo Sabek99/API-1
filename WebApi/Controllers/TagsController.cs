@@ -36,7 +36,7 @@ namespace WebApi.Controllers
             return Ok(tags);
         }
 
-        [HttpGet("{TagId}")]
+        [HttpGet("{tagId}")]
         public async Task<IActionResult> GetTagById(int tagId)
         {
             var checkTag =await _tagService.CheckIfTagExists(tagId);
@@ -57,6 +57,7 @@ namespace WebApi.Controllers
             {
                 Name = model.Name,
                 Description = model.Description,
+                User = user,
                 UserId = user.Id
             };
 
