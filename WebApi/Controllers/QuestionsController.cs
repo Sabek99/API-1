@@ -75,6 +75,8 @@ namespace WebApi.Controllers
 
             return Ok(question);
         }
+        
+      
 
         [HttpPost("{userId}")]
         public async Task<IActionResult> CreateQuestion(int userId,BaseQuestionModel model)
@@ -116,7 +118,9 @@ namespace WebApi.Controllers
             
             return Ok(_questionService.GetQuestionById(question.Id));
         }
-
+        
+        //this request is not working correctly yet 
+        //updating the tags in questionTags table is the problem 
         [HttpPut("{userId} {questionId}")]
         public async Task<IActionResult> UpdateQuestion(int userId, int questionId, BaseQuestionModel model)
         {
@@ -142,12 +146,7 @@ namespace WebApi.Controllers
             question.Title = model.QuestionTitle;
             question.Body = model.QuestionBody;
             _questionService.UpdateQuestion(question);
-
-            foreach (var tag in model.TagsId)
-            {
-                var questionTag = new 
-                
-            }
+            
             
             return Ok(_questionService.GetQuestionById(question.Id));
         }

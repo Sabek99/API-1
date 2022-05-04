@@ -23,14 +23,13 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{answerId}")]
-        public IActionResult GetAnswer(int answerId)
+        public async Task<IActionResult> GetAnswer(int answerId)
         {
-            var checkAnswer = _answerService.CheckIfAnswerExists(answerId);
+            var answer = await _answerService.GetAnswerById(answerId);
             
-            if (checkAnswer == null)
+            if (answer == null)
                 return NotFound("Answer is not found!");
             
-            var answer = _answerService.GetAnswerById(answerId);
             return Ok(answer);
         }
 
@@ -55,8 +54,8 @@ namespace WebApi.Controllers
                 CreationTime = DateTime.Now,
                 IsVerified = true,
                 IsBanned = false,
-                QuestionId = question.Id,
-                UserId = user.Id
+                QuestionId = questionId,
+                UserId = userId
             };
             
             await _answerService.CreateAnswer(answer);
@@ -66,7 +65,7 @@ namespace WebApi.Controllers
         [HttpPut("{answerId}")]
         public async Task<IActionResult> UpdateAnswer(int answerId, BaseAnswerModel model)
         {
-            var checkAnswer = await _answerService.CheckIfAnswerExists(answerId);
+            var checkAnswer = await _answerService.GetAnswerById(answerId);
 
             if (checkAnswer == null)
                 return NotFound("answer is not found!");
@@ -86,7 +85,7 @@ namespace WebApi.Controllers
         [HttpDelete("{answerId}")]
         public async Task<IActionResult> DeleteAnswer(int answerId)
         {
-            var answer = await _answerService.CheckIfAnswerExists(answerId);
+            var answer = await _answerService.GetAnswerById(answerId);
             
             if (answer == null)
                 return NotFound("answer is not found!");

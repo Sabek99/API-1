@@ -15,18 +15,10 @@ public class AnswerService : IAnswerService
     }
 
 
-    public IQueryable GetAnswerById(int answerId)
+    public async Task<Answer>GetAnswerById(int answerId)
     {
-        var query = from answer in _context.Answers
-            select new
-            {
-                Answer_body = answer.Body,
-                //question = answer.Question,
-                answered_by = answer.User.FirstName + ", " + answer.User.LastName,
-                answer.CreationTime,
-                answer.UpdateTime
-            };
-        return query;
+        return await _context.Answers
+            .SingleOrDefaultAsync(a =>a.Id == answerId);
     }
 
     public async Task<Answer> CreateAnswer(Answer answer)
@@ -34,12 +26,6 @@ public class AnswerService : IAnswerService
         await _context.Answers.AddAsync(answer);
         await _context.SaveChangesAsync();
         return answer;
-    }
-
-    public async Task<Answer> CheckIfAnswerExists(int answerId)
-    {
-        return await _context.Answers
-            .SingleOrDefaultAsync(a => a.Id == answerId);
     }
 
     public Answer UpdateAnswer(Answer answer)

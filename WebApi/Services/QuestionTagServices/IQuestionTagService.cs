@@ -10,4 +10,5 @@ public interface IQuestionTagService
     Task<QuestionTag> CreateQuestionTag(QuestionTag questionTag);
     Task<QuestionTag> CheckIfQuestionTagExists(QuestionTagModel questionTag);
     QuestionTag UpdateQuestionTag(QuestionTag questionTag);
+     
 }
