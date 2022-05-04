@@ -11,8 +11,8 @@ public interface IQuestionService
     IQueryable GetQuestionById(int questionId);
     Task<Question> CheckIfQuestionExists(int questionId);
     Task<Question> CreateQuestion(Question question);
-    Question UpdateTag(Question question);
-    Question DeleteTag(Question question);
+    Question UpdateQuestion(Question question);
+    Question DeleteQuestion(Question question);
     
     
 }

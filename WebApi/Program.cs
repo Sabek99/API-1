@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using WebApi.Authorization;
 using WebApi.Helpers;
 using WebApi.Services;
+using WebApi.Services.AnswerServices;
 using WebApi.Services.QuestionServices;
 using WebApi.Services.QuestionTagServices;
 using WebApi.Services.TageServices;
@@ -15,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IQuestionService, QuestionService>();
 builder.Services.AddTransient<IQuestionTagService, QuestionTagService>();
+builder.Services.AddTransient<IAnswerService, AnswerService>();
 
 void AddSwagger(IServiceCollection services)
 {

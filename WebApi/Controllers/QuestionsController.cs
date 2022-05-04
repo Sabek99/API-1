@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Entities;
 using WebApi.Models.Questions;
+using WebApi.Models.QuestionTag;
 using WebApi.Services;
 using WebApi.Services.QuestionServices;
 using WebApi.Services.QuestionTagServices;
@@ -79,17 +80,19 @@ namespace WebApi.Controllers
         public async Task<IActionResult> CreateQuestion(int userId,BaseQuestionModel model)
         {
             var user = _userService.GetById(userId);
-            var questionTags = new List<QuestionTag>();
+
             if (user == null)
                 return NotFound("user is not found!");
             
             if (string.IsNullOrWhiteSpace(model.QuestionTitle) || string.IsNullOrWhiteSpace(model.QuestionBody))
                 return BadRequest("Title and body are required");
 
-            if (model.TagsId.Select(tagId => _tagService.CheckIfTagExists(tagId)).Any(checkTag => checkTag == null))
-                return BadRequest($"tags are not valid!");
-            
-            var tags = _tagService.GetSpecificTags(model.TagsId);
+            foreach (var tag in model.TagsId)
+            {
+                var checkTag = await _tagService.CheckIfTagExists(tag);
+                if (checkTag == null)
+                    return NotFound($"tag with this ID: {tag} is not valid!");
+            }
             
             var question = new Question
             {
@@ -100,7 +103,66 @@ namespace WebApi.Controllers
             };
             
             await _questionService.CreateQuestion(question);
+            
+            foreach (var tag in model.TagsId)
+            {
+                var questionTag = new QuestionTag
+                {
+                    QuestionId = question.Id,
+                    TagId = tag
+                };
+                await _questionTagService.CreateQuestionTag(questionTag);
+            }
+            
             return Ok(_questionService.GetQuestionById(question.Id));
         }
+
+        [HttpPut("{userId} {questionId}")]
+        public async Task<IActionResult> UpdateQuestion(int userId, int questionId, BaseQuestionModel model)
+        {
+            var user = _userService.GetById(userId);
+            var question = await _questionService.CheckIfQuestionExists(questionId);
+
+            if (user == null)
+                return NotFound("user is not found!");
+            
+            if (question == null)
+                return NotFound("Question is not found!");
+            
+            if (string.IsNullOrWhiteSpace(model.QuestionTitle) || string.IsNullOrWhiteSpace(model.QuestionBody))
+                return BadRequest("Title and body are required");
+
+            foreach (var tag in model.TagsId)
+            {
+                var checkTag = await _tagService.CheckIfTagExists(tag);
+                if (checkTag == null)
+                    return NotFound($"tag with this ID: {tag} is not valid!");
+            }
+
+            question.Title = model.QuestionTitle;
+            question.Body = model.QuestionBody;
+            _questionService.UpdateQuestion(question);
+
+            foreach (var tag in model.TagsId)
+            {
+                var questionTag = new 
+                
+            }
+            
+            return Ok(_questionService.GetQuestionById(question.Id));
+        }
+
+        [HttpDelete("{questionId}")]
+        public async Task<IActionResult> DeleteQuestion(int questionId)
+        {
+            var question = await _questionService.CheckIfQuestionExists(questionId);
+            
+            if (question == null)
+                return NotFound("Question is not found!");
+            
+            _questionService.DeleteQuestion(question);
+            return Ok("Question has been deleted!");
+        }
+
     }
 }

@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Authorization;
 using WebApi.Entities;
 using WebApi.Models.Tags;
 using WebApi.Services;
@@ -26,7 +20,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTags()
+        public  IActionResult GetAllTags()
         {
             var tags =  _tagService.GetAllTags();
 
@@ -49,7 +43,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("{userId}")]
-        public async Task<IActionResult> CreateTag(int userId,BaseTagRequest model)
+        public async Task<IActionResult> CreateTag(int userId,BaseTagModel model)
         {
             var user = _userService.GetById(userId);
             if (string.IsNullOrWhiteSpace(model.Name)) return BadRequest("tag name is required!");
@@ -66,7 +60,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{tagId}")]
-        public async Task<IActionResult> UpdateTag(int tagId, BaseTagRequest model)
+        public async Task<IActionResult> UpdateTag(int tagId, BaseTagModel model)
         {
            var tag = await _tagService.CheckIfTagExists(tagId);
 
@@ -76,7 +70,7 @@ namespace WebApi.Controllers
            tag.Name = model.Name;
            tag.Description = model.Description;
            
-           if(string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.Description))
+           if(string.IsNullOrWhiteSpace(model.Name))
                return BadRequest("tag name is required!"); 
                    
            _tagService.UpdateTag(tag);

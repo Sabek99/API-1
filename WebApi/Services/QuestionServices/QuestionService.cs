@@ -31,14 +31,26 @@ public class QuestionService : IQuestionService
                     creation_time = question.CreationTime,
                     update_time = question.UpdateTime,
                     is_banned = question.IsBanned,
-                    tags = question.QuestionTags,
+                    tags = question.QuestionTags.Select(t => new { t.TagId, t.Tag.Name }),
                     owner = new
                     {
                         user_id = question.User.Id,
                         user_first_name = question.User.FirstName,
                         user_last_name = question.User.LastName
                     },
-                    answers = question.Answers
+                    answers = question.Answers.Select(a=> new
+                    {
+                        answer_id = a.Id,
+                        answer_body = a.Body,
+                        owner = new
+                        {
+                            user_id = a.User.Id,
+                            user_first_name = a.User.FirstName,
+                            user_last_name = a.User.LastName
+                        },
+                        is_verified = a.IsVerified,
+                        is_banned = a.IsBanned
+                    })
                 }
             };
 
@@ -51,19 +63,34 @@ public class QuestionService : IQuestionService
             join user in _context.AspNetUsers on question.UserId equals user.Id
             select new
             {
-                question_id =  question.Id,
-                question_body = question.Body,
-                creation_time = question.CreationTime,
-                update_time = question.UpdateTime,
-                is_banned = question.IsBanned,
-                tags = question.QuestionTags,
-                owner = new
+                question = new 
                 {
-                    user_id = question.User.Id,
-                    user_first_name = question.User.FirstName,
-                    user_last_name = question.User.LastName
-                },
-                answers = question.Answers
+                    question_id = question.Id,
+                    question_body = question.Body,
+                    creation_time = question.CreationTime,
+                    update_time = question.UpdateTime,
+                    is_banned = question.IsBanned,
+                    tags = question.QuestionTags.Select(t => new { t.TagId, t.Tag.Name }),
+                    owner = new
+                    {
+                        user_id = question.User.Id,
+                        user_first_name = question.User.FirstName,
+                        user_last_name = question.User.LastName
+                    },
+                    answers = question.Answers.Select(a=> new
+                    {
+                        answer_id = a.Id,
+                        answer_body = a.Body,
+                        owner = new
+                        {
+                            user_id = a.User.Id,
+                            user_first_name = a.User.FirstName,
+                            user_last_name = a.User.LastName
+                        },
+                        is_verified = a.IsVerified,
+                        is_banned = a.IsBanned
+                    })
+                }
             };
 
         return query;
@@ -76,19 +103,34 @@ public class QuestionService : IQuestionService
             where questionTag.TagId == tagId
             select new
             {
-               question_id = question.Id,
-               question_body = question.Body,
-               creation_time = question.CreationTime,
-               update_time = question.UpdateTime,
-               is_banned =  question.IsBanned,
-               tags = questionTag.Tag,
-               owner = new
+                question = new 
                 {
-                    user_id = question.User.Id,
-                    user_first_name = question.User.FirstName,
-                    user_last_name = question.User.LastName
-                },
-                answers = question.Answers
+                    question_id = question.Id,
+                    question_body = question.Body,
+                    creation_time = question.CreationTime,
+                    update_time = question.UpdateTime,
+                    is_banned = question.IsBanned,
+                    tags = question.QuestionTags.Select(t => new { t.TagId, t.Tag.Name }),
+                    owner = new
+                    {
+                        user_id = question.User.Id,
+                        user_first_name = question.User.FirstName,
+                        user_last_name = question.User.LastName
+                    },
+                    answers = question.Answers.Select(a=> new
+                    {
+                        answer_id = a.Id,
+                        answer_body = a.Body,
+                        owner = new
+                        {
+                            user_id = a.User.Id,
+                            user_first_name = a.User.FirstName,
+                            user_last_name = a.User.LastName
+                        },
+                        is_verified = a.IsVerified,
+                        is_banned = a.IsBanned
+                    })
+                }
             };
         return query;
     }
@@ -96,23 +138,37 @@ public class QuestionService : IQuestionService
     public IQueryable GetQuestionById(int questionId)
     {
         var query = from question in _context.Questions
-            join questionTag in _context.QuestionTags on question.Id equals questionTag.QuestionId
-            where question.Id == questionId
+            where question.Id == questionId 
             select new
             {
-                question_id = question.Id,
-                question_body = question.Body,
-                creation_time = question.CreationTime,
-                update_time = question.UpdateTime,
-                is_banned = question.IsBanned,
-                tags = questionTag.Tag,
-                owner = new
+                question = new 
                 {
-                    user_id = question.User.Id,
-                    user_first_name = question.User.FirstName,
-                    user_last_name = question.User.LastName
-                },
-                answers = question.Answers
+                    question_id = question.Id,
+                    question_body = question.Body,
+                    creation_time = question.CreationTime,
+                    update_time = question.UpdateTime,
+                    is_banned = question.IsBanned,
+                    tags = question.QuestionTags.Select(t => new { t.TagId, t.Tag.Name }),
+                    owner = new
+                    {
+                        user_id = question.User.Id,
+                        user_first_name = question.User.FirstName,
+                        user_last_name = question.User.LastName
+                    },
+                    answers = question.Answers.Select(a=> new
+                    {
+                        answer_id = a.Id,
+                        answer_body = a.Body,
+                        owner = new
+                        {
+                            user_id = a.User.Id,
+                            user_first_name = a.User.FirstName,
+                            user_last_name = a.User.LastName
+                        },
+                        is_verified = a.IsVerified,
+                        is_banned = a.IsBanned
+                    })
+                }
             };
         return query;
     }
@@ -130,13 +186,17 @@ public class QuestionService : IQuestionService
         return question;
     }
 
-    public Question UpdateTag(Question question)
+    public Question UpdateQuestion(Question question)
     {
-        throw new NotImplementedException();
+        _context.Questions.Update(question);
+        _context.SaveChanges();
+        return question;
     }
 
-    public Question DeleteTag(Question question)
+    public Question DeleteQuestion(Question question)
     {
-        throw new NotImplementedException();
+        _context.Questions.Remove(question);
+        _context.SaveChanges();
+        return question;
     }
 }

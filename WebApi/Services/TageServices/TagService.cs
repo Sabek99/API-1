@@ -46,16 +46,7 @@ public class TagService : ITagService
             };
         return query;
     }
-
-    public IQueryable GetSpecificTags(IEnumerable<int> tagsId)
-    {
-        var query = from tag in _context.Tags
-            join  i in tagsId on tag.Id equals i
-            select tag.Id;
-        
-        return query;
-    }
-
+    
     public async Task<Tag> CreateTag(Tag tag)
     {
         await _context.AddAsync(tag);
