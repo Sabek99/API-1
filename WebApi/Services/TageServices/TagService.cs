@@ -28,7 +28,7 @@ public class TagService : ITagService
                 tag_id = tag.Id,
                 tag_name = tag.Name,
                 tag_description = tag.Description,
-                number_of_questions = _context.QuestionTags.Count(n=>n.TagId == tag.Id)
+                number_of_questions = tag.QuestionTags.Count
             };
         return query;
     }
@@ -42,11 +42,11 @@ public class TagService : ITagService
                 tag_id = tag.Id,
                 tag_name = tag.Name,
                 tag_description = tag.Description,
-                number_of_questions = _context.QuestionTags.Count(n=>n.TagId == tag.Id)
+                number_of_questions = tag.QuestionTags.Count
             };
         return query;
     }
-
+    
     public async Task<Tag> CreateTag(Tag tag)
     {
         await _context.AddAsync(tag);

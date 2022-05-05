@@ -12,8 +12,9 @@ public class Question
     public bool IsBanned { get; set; }
    
     //navigation properties 
-    public ICollection<Answer> Answers { get; set; }
-    public ICollection<QuestionTag> QuestionTags { get; set; }
-    public User User { get; set; }
+    public virtual ICollection<Answer> Answers { get; set; }
+    public virtual ICollection<QuestionTag> QuestionTags { get; set; }
+    public virtual User User { get; set; }
+    public int UserId { get; set; }
     
 }
