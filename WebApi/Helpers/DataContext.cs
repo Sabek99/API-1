@@ -55,7 +55,7 @@ public class DataContext : IdentityDbContext <IdentityUser<int>,IdentityRole<int
         modelBuilder.Entity<Tag>()
             .HasOne(u => u.User)
             .WithMany(a => a.Tags);
-
+    
     }
 
    

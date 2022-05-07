@@ -258,10 +258,10 @@ namespace WebApi.Migrations
                     b.Property<int>("UpVote")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -270,7 +270,7 @@ namespace WebApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Answers", (string)null);
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("WebApi.Entities.Question", b =>
@@ -293,17 +293,17 @@ namespace WebApi.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Questions", (string)null);
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("WebApi.Entities.QuestionTag", b =>
@@ -326,7 +326,7 @@ namespace WebApi.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("QuestionTags", (string)null);
+                    b.ToTable("QuestionTags");
                 });
 
             modelBuilder.Entity("WebApi.Entities.Tag", b =>
@@ -343,14 +343,14 @@ namespace WebApi.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tags", (string)null);
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("WebApi.Entities.User", b =>
@@ -430,7 +430,9 @@ namespace WebApi.Migrations
 
                     b.HasOne("WebApi.Entities.User", "User")
                         .WithMany("Answers")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Question");
 
@@ -441,7 +443,9 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Entities.User", "User")
                         .WithMany("Questions")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -469,7 +473,9 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Entities.User", "User")
                         .WithMany("Tags")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

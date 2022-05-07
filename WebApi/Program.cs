@@ -1,5 +1,12 @@
 ﻿using System.Configuration;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
@@ -17,6 +24,7 @@ builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IQuestionService, QuestionService>();
 builder.Services.AddTransient<IQuestionTagService, QuestionTagService>();
 builder.Services.AddTransient<IAnswerService, AnswerService>();
+
 
 void AddSwagger(IServiceCollection services)
 {
@@ -74,7 +82,14 @@ services.AddEndpointsApiExplorer();
 services.AddCors();
 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-services.AddControllers();
+
+services.AddControllers().AddJsonOptions(options =>
+{
+    //Ignore cyclic reference errors
+    options.JsonSerializerOptions.ReferenceHandler = 
+        ReferenceHandler.IgnoreCycles;
+}); 
+
 AddSwagger(services);
 services.AddSwaggerGen();
 // configure automapper with all automapper profiles from this assembly
@@ -92,6 +107,8 @@ services.AddCors(options =>
 });
 
 
+
+
 var app = builder.Build();
 
 app.UseDeveloperExceptionPage();
@@ -107,12 +124,6 @@ app.UseSwaggerUI(c =>
 app.UseRouting();
 app.UseAuthentication();
 
-// migrate any database changes on startup (includes initial db creation)
-// using (var scope = app.Services.CreateScope())
-// {
-//     var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();    
-//     dataContext.Database.Migrate();
-// }
 
 // configure HTTP request pipeline
 {

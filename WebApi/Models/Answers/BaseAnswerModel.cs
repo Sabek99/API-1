@@ -1,4 +1,6 @@
-﻿namespace WebApi.Models.Answers;
+﻿using Newtonsoft.Json;
+
+namespace WebApi.Models.Answers;
 
 public class BaseAnswerModel
 {
