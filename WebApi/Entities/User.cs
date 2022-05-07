@@ -13,8 +13,8 @@ public class User:IdentityUser<int>
     public string LastName { get; set; }
     
     //navigation properties 
-    public ICollection<Question> Questions { get; set; }
-    public ICollection<Answer> Answers { get; set; }
-    public ICollection<Tag> Tags { get; set; }
+    public virtual ICollection<Question> Questions { get; set; }
+    public virtual ICollection<Answer> Answers { get; set; }
+    public virtual ICollection<Tag> Tags { get; set; }
     
 }

@@ -13,7 +13,7 @@ public class Answer
     
     //navigation properties 
     public int QuestionId { get; set; }
-    public Question Question { get; set; }
-    public User User { get; set; }
+    public virtual Question Question { get; set; }
+    public virtual User User { get; set; }
     public int UserId { get; set; }
 }

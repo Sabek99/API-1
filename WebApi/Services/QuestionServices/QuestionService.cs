@@ -20,7 +20,7 @@ public class QuestionService : IQuestionService
     public IQueryable GetAllQuestions()
     {
         var query = from question in _context.Questions
-            join questionTag in _context.QuestionTags on question.Id equals questionTag.QuestionId
+            // join questionTag in _context.QuestionTags on question.Id equals questionTag.QuestionId
             join user in _context.AspNetUsers on question.UserId equals user.Id
             select new
             {

@@ -9,9 +9,11 @@ public class AnswerService : IAnswerService
 
     private readonly DataContext _context;
 
+
     public AnswerService(DataContext context)
     {
         _context = context;
+       
     }
 
 
@@ -23,6 +25,7 @@ public class AnswerService : IAnswerService
 
     public async Task<Answer> CreateAnswer(Answer answer)
     {
+        
         await _context.Answers.AddAsync(answer);
         await _context.SaveChangesAsync();
         return answer;
