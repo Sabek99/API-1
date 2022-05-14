@@ -10,7 +10,7 @@ using WebApi.Services;
 
 [Authorize]
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
     private IUserService _userService;
@@ -61,10 +61,10 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
 
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, UpdateRequest model)
+    [HttpPut("Update")]
+    public IActionResult Update(UpdateRequest model)
     {
-        _userService.Update(id, model);
+        _userService.Update(model);
         return Ok(new { message = "User updated successfully"});
     }
 

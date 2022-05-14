@@ -10,7 +10,7 @@ public interface IUserService
     IEnumerable<UserResponse> GetAll();
     User GetById(int id);
     //void Register(RegisterRequest model);
-    void Update(int id, UpdateRequest model);
+    void Update( UpdateRequest model);
     void Delete(int id);
     void SignOut();
 }
