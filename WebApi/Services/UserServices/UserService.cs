@@ -59,9 +59,11 @@ public class UserService : IUserService
     }
     
 
-    public IEnumerable<User> GetAll()
+    public IEnumerable<UserResponse> GetAll()
     {
-        return _context.AspNetUsers;
+        var users = _context.AspNetUsers.ToList();
+        var response = _mapper.Map<IEnumerable<UserResponse>>(users);
+        return response;
     }
 
     public User GetById(int id)
