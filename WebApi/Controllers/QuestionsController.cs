@@ -78,7 +78,7 @@ public class QuestionsController : ControllerBase
         if (checkQuestion == null)
             return NotFound("Question is not found!");
 
-        var question = _questionService.GetQuestionById(questionId);
+        var question = await _questionService.GetQuestionById(questionId);
 
         return Ok(question);
     }
