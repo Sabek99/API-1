@@ -1,6 +1,8 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Authorization;
 using WebApi.Entities;
+using WebApi.Models.Pagination;
 using WebApi.Models.Questions;
 using WebApi.Services;
 using WebApi.Services.QuestionServices;
@@ -8,7 +10,7 @@ using WebApi.Services.QuestionTagServices;
 using WebApi.Services.TageServices;
 
 [Authorize]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 [ApiController]
 public class QuestionsController : ControllerBase
 {
@@ -35,37 +37,40 @@ public class QuestionsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAllQuestions()
+    public async Task<IActionResult> GetAllQuestions([FromQuery]PaginationParams @params)
     {
-        var questions = _questionService.GetAllQuestions();
+        var paginationMetaData =  new PaginationMetaData( @params.Page,await _questionService.GetCount(), @params.ItemPerPage);
+        Response.Headers.Add("X-pagination",JsonSerializer.Serialize(paginationMetaData));
+        var questions =  await _questionService.GetAllQuestions(@params);
         return Ok(questions);
     }
 
-    [HttpGet("GetAllQuestionsByUser {userId}")]
-    public  IActionResult GetAllQuestionsByUserId(int userId)
+    [HttpGet("GetAllQuestionsByUser/{userId}")]
+    public  async Task<IActionResult> GetAllQuestionsByUserId(int userId, [FromQuery]PaginationParams @params)
     {
-        var user =  _userService.GetById(userId);
-        
+        var user = _userService.GetById(userId);
         if (user == null)
             return NotFound("user not found!");
-
-        var questions = _questionService.GetAllQuestionsByUserId(userId);
+        
+        var paginationMetaData =  new PaginationMetaData( @params.Page,await _questionService.GetCountUserId(userId), @params.ItemPerPage);
+        Response.Headers.Add("X-pagination",JsonSerializer.Serialize(paginationMetaData));
+        var questions = await _questionService.GetAllQuestionsByUserId(userId, @params);
         return Ok(questions);
     }
 
-    [HttpGet("GetAllQuestionsByTag {tagId}")]
-    public async Task<IActionResult> GetAllQuestionsByTagId(int tagId)
+    [HttpGet("GetAllQuestionsByTag/{tagId}")]
+    public async Task<IActionResult> GetAllQuestionsByTagId(int tagId, [FromQuery]PaginationParams @params)
     {
         var tag = await _tagService.CheckIfTagExists(tagId);
-        
         if (tag == null)
             return NotFound("Tag is not found!");
-
-        var questions = _questionService.GetAllQuestionsByTagId(tagId);
+        var paginationMetaData =  new PaginationMetaData( @params.Page,await _questionService.GetCountTagId(tagId), @params.ItemPerPage);
+        Response.Headers.Add("X-pagination",JsonSerializer.Serialize(paginationMetaData));
+        var questions = await _questionService.GetAllQuestionsByTagId(tagId,@params);
         return Ok(questions);
     }
 
-    [HttpGet("GetQuestionById {questionId}")]
+    [HttpGet("GetQuestionById/{questionId}")]
     public async Task<IActionResult> GetQuestionById(int questionId)
     {
         var checkQuestion = await _questionService.CheckIfQuestionExists(questionId);
@@ -73,7 +78,7 @@ public class QuestionsController : ControllerBase
         if (checkQuestion == null)
             return NotFound("Question is not found!");
 
-        var question = _questionService.GetQuestionById(questionId);
+        var question = await _questionService.GetQuestionById(questionId);
 
         return Ok(question);
     }
