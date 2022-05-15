@@ -20,8 +20,7 @@ public class QuestionService : IQuestionService
 
     public async Task<IEnumerable> GetAllQuestions(PaginationParams @params)
     {
-        var questions = await _context.Questions.Select(question => new
-            {
+        var questions = await _context.Questions.Select(question => new {
                 question_id = question.Id,
                 question_body = question.Body,
                 creation_time = question.CreationTime,
@@ -47,8 +46,8 @@ public class QuestionService : IQuestionService
                     is_verified = a.IsVerified,
                     is_banned = a.IsBanned
                 })
-            }
-        ).Skip((@params.Page - 1) * @params.ItemPerPage)
+            })
+            .Skip((@params.Page - 1) * @params.ItemPerPage)
             .Take(@params.ItemPerPage)
             .ToListAsync();
         return questions;
@@ -57,8 +56,7 @@ public class QuestionService : IQuestionService
 
     public async Task<IEnumerable> GetAllQuestionsByUserId(int userId, PaginationParams @params)
     {
-        var questions = await _context.Questions.Select(question => new
-            {
+        var questions = await _context.Questions.Select(question => new {
                     question_id = question.Id,
                     question_body = question.Body,
                     creation_time = question.CreationTime,
@@ -84,8 +82,8 @@ public class QuestionService : IQuestionService
                         is_verified = a.IsVerified,
                         is_banned = a.IsBanned
                     })
-            }
-        ).Skip((@params.Page - 1) * @params.ItemPerPage)
+            })
+            .Skip((@params.Page - 1) * @params.ItemPerPage)
             .Take(@params.ItemPerPage)
             .ToListAsync();
         return questions;
@@ -94,39 +92,6 @@ public class QuestionService : IQuestionService
     
     public async Task<IEnumerable> GetAllQuestionsByTagId(int tagId,PaginationParams @params)
     {
-       /* var query = from question in _context.Questions
-            join questionTag in _context.QuestionTags on question.Id equals questionTag.QuestionId
-            where questionTag.TagId == tagId
-            select new
-            {
-                    question_id = question.Id,
-                    question_body = question.Body,
-                    creation_time = question.CreationTime,
-                    update_time = question.UpdateTime,
-                    is_banned = question.IsBanned,
-                    tags = question.QuestionTags.Select(t => new { t.TagId, t.Tag.Name }),
-                    owner = new
-                    {
-                        user_id = question.User.Id,
-                        user_first_name = question.User.FirstName,
-                        user_last_name = question.User.LastName
-                    },
-                    answers = question.Answers.Select(a=> new
-                    {
-                        answer_id = a.Id,
-                        answer_body = a.Body,
-                        owner = new
-                        {
-                            user_id = a.User.Id,
-                            user_first_name = a.User.FirstName,
-                            user_last_name = a.User.LastName
-                        },
-                        is_verified = a.IsVerified,
-                        is_banned = a.IsBanned
-                    })
-                
-            };
-        return query;*/
        var questions = await _context.Questions.Join(_context.QuestionTags, 
                question => question.Id, 
                qt => qt.QuestionId, 
@@ -163,41 +128,40 @@ public class QuestionService : IQuestionService
        return questions;
     }
 
-    public IQueryable GetQuestionById(int questionId)
+    public async Task<IEnumerable> GetQuestionById(int questionId)
     {
-       var query = from question in _context.Questions
-            where question.Id == questionId 
-            select new
-            {
-               
-                    question_id = question.Id,
-                    question_body = question.Body,
-                    creation_time = question.CreationTime,
-                    update_time = question.UpdateTime,
-                    is_banned = question.IsBanned,
-                    tags = question.QuestionTags.Select(t => new { t.TagId, t.Tag.Name }),
+        var question = await _context.Questions
+            .Where(question => question.Id == questionId)
+            .Select(question => new {
+                question_id = question.Id,
+                question_body = question.Body,
+                creation_time = question.CreationTime,
+                update_time = question.UpdateTime,
+                is_banned = question.IsBanned,
+                tags = question.QuestionTags.Select(t => new { t.TagId, t.Tag.Name }),
+                owner = new
+                {
+                    user_id = question.User.Id,
+                    user_first_name = question.User.FirstName,
+                    user_last_name = question.User.LastName
+                },
+                answers = question.Answers.Select(a=> new {
+                    answer_id = a.Id,
+                    answer_body = a.Body,
                     owner = new
                     {
-                        user_id = question.User.Id,
-                        user_first_name = question.User.FirstName,
-                        user_last_name = question.User.LastName
+                        user_id = a.User.Id,
+                        user_first_name = a.User.FirstName,
+                        user_last_name = a.User.LastName
                     },
-                    answers = question.Answers.Select(a=> new
-                    {
-                        answer_id = a.Id,
-                        answer_body = a.Body,
-                        owner = new
-                        {
-                            user_id = a.User.Id,
-                            user_first_name = a.User.FirstName,
-                            user_last_name = a.User.LastName
-                        },
-                        is_verified = a.IsVerified,
-                        is_banned = a.IsBanned
-                    })
-                
-            };
-        return query;
+                    is_verified = a.IsVerified,
+                    is_banned = a.IsBanned
+                })
+
+            })
+            .ToListAsync();
+        
+        return question;
     }
 
     public async Task<Question> CheckIfQuestionExists(int questionId)

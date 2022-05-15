@@ -10,7 +10,7 @@ public interface IQuestionService
     Task<IEnumerable> GetAllQuestions(PaginationParams @params);
     Task<IEnumerable> GetAllQuestionsByUserId(int userId,PaginationParams @params);
     Task<IEnumerable> GetAllQuestionsByTagId(int tagId,PaginationParams @params);
-    IQueryable GetQuestionById(int questionId);
+    Task<IEnumerable> GetQuestionById(int questionId);
     Task<Question> CheckIfQuestionExists(int questionId);
     Task<Question> CreateQuestion(Question question);
     Question UpdateQuestion(Question question);
