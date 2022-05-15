@@ -59,9 +59,11 @@ public class UserService : IUserService
     }
     
 
-    public IEnumerable<User> GetAll()
+    public IEnumerable<UserResponse> GetAll()
     {
-        return _context.AspNetUsers;
+        var users = _context.AspNetUsers.ToList();
+        var response = _mapper.Map<IEnumerable<UserResponse>>(users);
+        return response;
     }
 
     public User GetById(int id)
@@ -96,9 +98,10 @@ public class UserService : IUserService
         return response;
     }
 
-    public void Update(int id, UpdateRequest model)
+    public void Update(UpdateRequest model)
     {
-        var user = GetUser(id);
+        var user = (User) _httpContextAccessor.HttpContext?.Items["User"];
+        
 
         // validate
         if (model.Username != user.UserName && _context.AspNetUsers.Any(x => x.UserName == model.Username))

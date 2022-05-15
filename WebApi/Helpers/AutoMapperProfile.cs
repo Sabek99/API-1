@@ -15,6 +15,8 @@ public class AutoMapperProfile : Profile
         CreateMap<RegisterRequest, User>();
         
         CreateMap<User,RegisterResponse>();
+        
+        CreateMap<User,UserResponse>();
 
         // UpdateRequest -> User
         CreateMap<UpdateRequest, User>()

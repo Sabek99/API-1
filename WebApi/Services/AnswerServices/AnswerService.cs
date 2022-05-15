@@ -13,19 +13,16 @@ public class AnswerService : IAnswerService
     public AnswerService(DataContext context)
     {
         _context = context;
-       
     }
 
 
     public async Task<Answer>GetAnswerById(int answerId)
     {
-        return await _context.Answers
-            .SingleOrDefaultAsync(a =>a.Id == answerId);
+        return await _context.Answers.SingleOrDefaultAsync(a =>a.Id == answerId);
     }
 
     public async Task<Answer> CreateAnswer(Answer answer)
     {
-        
         await _context.Answers.AddAsync(answer);
         await _context.SaveChangesAsync();
         return answer;

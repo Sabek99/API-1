@@ -12,6 +12,21 @@ public class User:IdentityUser<int>
     public string FirstName { get; set; }
     public string LastName { get; set; }
     
+    public string Bio { get; set; }
+    
+    public int UniversityLevel { get; set; }
+    
+    public string PhotoUrl { get; set; }
+    
+    public string College { get; set; }
+    
+    public string Major { get; set; }
+    
+    public DateTime Birthdate { get; set; }
+    
+    public string CreationTimestamp { get; set; }
+    public string UpdateTimestamp { get; set; }
+    
     //navigation properties 
     public virtual ICollection<Question> Questions { get; set; }
     public virtual ICollection<Answer> Answers { get; set; }
