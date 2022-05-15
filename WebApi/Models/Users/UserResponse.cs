@@ -9,10 +9,18 @@ public class UserResponse
     public string Username { get; set; }
     public string PhoneNumber { get; set; }
     public string Bio { get; set; }
-    public string UniversityLevel { get; set; }
+    
+    public int UniversityLevel { get; set; }
+    
     public string PhotoUrl { get; set; }
+    
     public string College { get; set; }
+    
     public string Major { get; set; }
-    public string Birthdate { get; set; }
+    
+    public DateTime Birthdate { get; set; }
+    
+    public string CreationTimestamp { get; set; }
+    public string UpdateTimestamp { get; set; }
    
 }
