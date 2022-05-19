@@ -22,6 +22,7 @@ public class QuestionService : IQuestionService
     {
         var questions = await _context.Questions.Select(question => new {
                 question_id = question.Id,
+                question_title = question.Title,
                 question_body = question.Body,
                 creation_time = question.CreationTime,
                 update_time = question.UpdateTime,
@@ -58,6 +59,7 @@ public class QuestionService : IQuestionService
     {
         var questions = await _context.Questions.Select(question => new {
                     question_id = question.Id,
+                    question_title = question.Title,
                     question_body = question.Body,
                     creation_time = question.CreationTime,
                     update_time = question.UpdateTime,
@@ -97,6 +99,7 @@ public class QuestionService : IQuestionService
                qt => qt.QuestionId, 
                (question,qt)=>new {
                                                question_id = question.Id,
+                                               question_title = question.Title,
                                                question_body = question.Body,
                                                creation_time = question.CreationTime,
                                                update_time = question.UpdateTime,
@@ -134,6 +137,7 @@ public class QuestionService : IQuestionService
             .Where(question => question.Id == questionId)
             .Select(question => new {
                 question_id = question.Id,
+                question_title = question.Title,
                 question_body = question.Body,
                 creation_time = question.CreationTime,
                 update_time = question.UpdateTime,
