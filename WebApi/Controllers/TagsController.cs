@@ -95,9 +95,18 @@ public class TagsController : ControllerBase
     [HttpDelete("{tagId}")]
     public async Task<IActionResult> DeleteTag(int tagId)
     {
+        var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
+        
+        if (userObject == null)
+            return NotFound("User is not found!");
+        
         var tag = await _tagService.CheckIfTagExists(tagId);
+        
         if (tag == null)
             return NotFound("Tag is not found");
+
+        if (tag.UserId != userObject.Id)
+            return BadRequest("Not allowed!");
 
         _tagService.DeleteTag(tag);
 

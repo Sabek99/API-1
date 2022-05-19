@@ -95,11 +95,19 @@ public class AnswersController : ControllerBase
     [HttpDelete("{answerId}")]
     public async Task<IActionResult> DeleteAnswer(int answerId)
     {
+        var userObject =  (User) _httpContextAccessor.HttpContext?.Items["User"];
+        
+        if (userObject == null)
+            return NotFound("User is not found!");
+        
         var answer = await _answerService.GetAnswerById(answerId);
         
         if (answer == null)
             return NotFound("answer is not found!");
 
+        if (answer.UserId != userObject.Id)
+            return BadRequest("Not allowed!");
+        
         _answerService.DeleteAnswer(answer);
         return Ok("Answer is deleted!");
     }

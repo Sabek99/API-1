@@ -86,8 +86,6 @@ public class QuestionsController : ControllerBase
         return Ok(question);
     }
     
-  
-
     [HttpPost]
     public async Task<IActionResult> CreateQuestion(BaseQuestionModel model)
     {
@@ -129,7 +127,6 @@ public class QuestionsController : ControllerBase
         return Ok(await _questionService.GetQuestionById(question.Id));
     }
     
-    
     [HttpPut("{questionId}")]
     public async Task<IActionResult> UpdateQuestion( int questionId, UpdateQuestionModel model)
     {
@@ -162,10 +159,19 @@ public class QuestionsController : ControllerBase
     [HttpDelete("{questionId}")]
     public async Task<IActionResult> DeleteQuestion(int questionId)
     {
+        
+        var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
+        
+        if (userObject == null)
+            return NotFound("user is not found!");
+        
         var question = await _questionService.CheckIfQuestionExists(questionId);
         
         if (question == null)
             return NotFound("Question is not found!");
+
+        if (question.UserId != userObject.Id)
+            return BadRequest("Not allowed!");
         
         _questionService.DeleteQuestion(question);
         return Ok("Question has been deleted!");
