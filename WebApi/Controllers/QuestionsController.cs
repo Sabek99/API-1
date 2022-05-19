@@ -37,6 +37,8 @@ public class QuestionsController : ControllerBase
     }
 
     [HttpGet]
+    
+    //if there is no question return no questions yet!
     public async Task<IActionResult> GetAllQuestions([FromQuery]PaginationParams @params)
     {
         var paginationMetaData =  new PaginationMetaData( @params.Page,await _questionService.GetCount(), @params.ItemPerPage);
@@ -50,7 +52,8 @@ public class QuestionsController : ControllerBase
     {
         var user = _userService.GetById(userId);
         if (user == null)
-            return NotFound("user not found!");
+            return NotFound();
+       
         
         var paginationMetaData =  new PaginationMetaData( @params.Page,await _questionService.GetCountUserId(userId), @params.ItemPerPage);
         Response.Headers.Add("X-pagination",JsonSerializer.Serialize(paginationMetaData));
@@ -123,39 +126,37 @@ public class QuestionsController : ControllerBase
             await _questionTagService.CreateQuestionTag(questionTag);
         }
         
-        return Ok(_questionService.GetQuestionById(question.Id));
+        return Ok(await _questionService.GetQuestionById(question.Id));
     }
     
-    //this request is not working correctly yet 
-    //updating the tags in questionTags table is the problem 
-    [HttpPut("{userId} {questionId}")]
-    public async Task<IActionResult> UpdateQuestion(int userId, int questionId, BaseQuestionModel model)
+    
+    [HttpPut("{questionId}")]
+    public async Task<IActionResult> UpdateQuestion( int questionId, UpdateQuestionModel model)
     {
-        var user = _userService.GetById(userId);
+        var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
         var question = await _questionService.CheckIfQuestionExists(questionId);
 
-        if (user == null)
+        if (userObject == null)
             return NotFound("user is not found!");
         
         if (question == null)
             return NotFound("Question is not found!");
+
+        if (question.UserId != userObject.Id)
+            return BadRequest("Not Allowed!");
+            
         
         if (string.IsNullOrWhiteSpace(model.QuestionTitle) || string.IsNullOrWhiteSpace(model.QuestionBody))
             return BadRequest("Title and body are required");
-
-        foreach (var tag in model.TagsId)
-        {
-            var checkTag = await _tagService.CheckIfTagExists(tag);
-            if (checkTag == null)
-                return NotFound($"tag with this ID: {tag} is not valid!");
-        }
+        
 
         question.Title = model.QuestionTitle;
         question.Body = model.QuestionBody;
+        question.UpdateTime = DateTime.Now;
         _questionService.UpdateQuestion(question);
         
         
-        return Ok(_questionService.GetQuestionById(question.Id));
+        return Ok(await _questionService.GetQuestionById(question.Id));
     }
 
     [HttpDelete("{questionId}")]
