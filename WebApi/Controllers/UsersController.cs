@@ -1,4 +1,6 @@
-﻿namespace WebApi.Controllers;
+﻿using WebApi.Entities;
+
+namespace WebApi.Controllers;
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +18,14 @@ public class UsersController : ControllerBase
     private IUserService _userService;
     private IMapper _mapper;
     private readonly AppSettings _appSettings;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UsersController(IUserService userService, IMapper mapper, IOptions<AppSettings> appSettings)
+    public UsersController(IUserService userService, IMapper mapper, IOptions<AppSettings> appSettings,IHttpContextAccessor httpContextAccessor)
     {
         _userService = userService;
         _mapper = mapper;
         _appSettings = appSettings.Value;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [AllowAnonymous]
@@ -66,7 +70,9 @@ public class UsersController : ControllerBase
     public IActionResult Update(UpdateRequest model)
     {
         _userService.Update(model);
-        return Ok(new { message = "User updated successfully"});
+        var user = (User) _httpContextAccessor.HttpContext?.Items["User"];
+        var response = _mapper.Map<UserResponse>(user);
+        return Ok(response);
     }
 
     [HttpDelete("{id}")]
