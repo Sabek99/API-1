@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -49,6 +50,8 @@ public class UserService : IUserService
         if (user == null || !BCrypt.Verify(model.Password, user.PasswordHash))
             throw new AppException("Username or password is incorrect");
 
+        
+
         // authentication successful
         var response = _mapper.Map<AuthenticateResponse>(user);
         response.Token = _jwtUtils.GenerateToken(user);
@@ -83,7 +86,7 @@ public class UserService : IUserService
         var user = _mapper.Map<User>(model);
         // hash password
         user.PasswordHash = BCrypt.HashPassword(model.Password);
-        
+        user.CreationTimestamp = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
         // save user
         _context.AspNetUsers.Add(user);
         _context.SaveChanges();
@@ -110,6 +113,8 @@ public class UserService : IUserService
         // hash password if it was entered
         if (!string.IsNullOrEmpty(model.Password))
             user.PasswordHash = BCrypt.HashPassword(model.Password);
+        
+        user.UpdateTimestamp = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
 
         // copy model to user and save
         _mapper.Map(model, user);
