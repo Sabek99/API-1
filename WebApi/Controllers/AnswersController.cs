@@ -32,7 +32,7 @@ public class AnswersController : ControllerBase
         if (answer == null)
             return NotFound("Answer is not found!");
         
-        return Ok(answer);
+        return Ok(await _answerService.GetTheAnswer(answerId));
     }
 
     [HttpPost("{questionId}")]
@@ -62,27 +62,34 @@ public class AnswersController : ControllerBase
         };
 
         await _answerService.CreateAnswer(answer);
-        return Ok(answer);
+        return Ok(await _answerService.GetTheAnswer(answer.Id));
     }
 
     [HttpPut("{answerId}")]
     public async Task<IActionResult> UpdateAnswer(int answerId, BaseAnswerModel model)
     {
-        var checkAnswer = await _answerService.GetAnswerById(answerId);
+        var userObject =  (User) _httpContextAccessor.HttpContext?.Items["User"];
 
-        if (checkAnswer == null)
+        var answer = await _answerService.GetAnswerById(answerId);
+
+        if (answer == null)
             return NotFound("answer is not found!");
+        
+        if (userObject == null)
+            return NotFound("User is not found!");
+        
+        if (answer.UserId != userObject.Id)
+            return BadRequest("Not Allowed!");
 
         if (string.IsNullOrWhiteSpace(model.Body))
             return BadRequest("answer Body is required!");
 
-        var answer = new Answer
-        {
-            Body = model.Body,
-            UpdateTime = DateTime.Now
-        };
 
-        return Ok(answer);
+        answer.Body = model.Body;
+        answer.UpdateTime = DateTime.Now;
+        
+        _answerService.UpdateAnswer(answer);
+        return Ok(await _answerService.GetTheAnswer(answerId));
     }
 
     [HttpDelete("{answerId}")]

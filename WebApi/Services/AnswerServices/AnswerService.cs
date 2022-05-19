@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Entities;
 using WebApi.Helpers;
 
@@ -16,9 +17,44 @@ public class AnswerService : IAnswerService
     }
 
 
+    public async Task<IEnumerable> GetTheAnswer(int answerId)
+    {
+        var answer = await _context.Answers
+            .Where(a => a.Id == answerId)
+            .Select(answer => new
+            {
+                answer_id = answer.Id,
+                answer_body = answer.Body,
+                answer_upvote = answer.UpVote,
+                answer_downvote = answer.DownVote,
+                creation_time = answer.CreationTime,
+                update_time = answer.UpdateTime,
+                is_banned = answer.IsBanned,
+                is_verfied = answer.IsVerified,
+                question = new
+                {
+                    question_id = answer.Question.Id,
+                    question_title = answer.Question.Title,
+                    question_body = answer.Question.Body,
+                    user_id = answer.Question.UserId,
+                },
+
+                owner = new
+                {
+                    user_id = answer.UserId,
+                    user_first_name = answer.User.FirstName,
+                    user_last_name = answer.User.LastName
+                }
+
+            })
+            .ToListAsync();
+        return answer;
+    }
+
     public async Task<Answer>GetAnswerById(int answerId)
     {
-        return await _context.Answers.SingleOrDefaultAsync(a =>a.Id == answerId);
+        return await _context.Answers
+            .SingleOrDefaultAsync(a =>a.Id == answerId);
     }
 
     public async Task<Answer> CreateAnswer(Answer answer)
