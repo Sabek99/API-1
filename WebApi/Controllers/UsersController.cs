@@ -58,7 +58,8 @@ public class UsersController : ControllerBase
     public IActionResult GetById(int id)
     {
         var user = _userService.GetById(id);
-        return Ok(user);
+        var response = _mapper.Map<UserResponse>(user);
+        return Ok(response);
     }
 
     [HttpPut("Update")]
