@@ -54,7 +54,7 @@ public class AnswersController : ControllerBase
         var answer = new Answer
         {
             Body = model.Body,
-            CreationTime = DateTime.Now,
+            CreationTime = DateTime.UtcNow,
             IsVerified = true,
             IsBanned = false,
             QuestionId = questionId,
@@ -86,7 +86,7 @@ public class AnswersController : ControllerBase
 
 
         answer.Body = model.Body;
-        answer.UpdateTime = DateTime.Now;
+        answer.UpdateTime = DateTime.UtcNow;
         
         _answerService.UpdateAnswer(answer);
         return Ok(await _answerService.GetTheAnswer(answerId));

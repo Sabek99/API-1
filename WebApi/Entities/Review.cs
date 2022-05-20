@@ -4,11 +4,13 @@ namespace WebApi.Entities;
 
 public class Review
 {
-    public virtual User User { get; set; }
-    public int UserId { get; set; }
+    public User Reviewer { get; set; }
+    public int ReviewerId { get; set; }
 
-    public virtual User Reviewee { get; set; }
+    public User Reviewee { get; set; }
     public int RevieweeId { get; set; }
+    
+    
     public string ReviewBody { get; set; }
     public DateTime CreationTime { get; set; }
     

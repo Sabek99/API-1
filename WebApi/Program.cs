@@ -111,6 +111,8 @@ services.AddCors(options =>
 
 var app = builder.Build();
 
+
+
 app.UseDeveloperExceptionPage();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -124,6 +126,11 @@ app.UseSwaggerUI(c =>
 app.UseRouting();
 app.UseAuthentication();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();    
+    dataContext.Database.Migrate();
+}
 
 // configure HTTP request pipeline
 {

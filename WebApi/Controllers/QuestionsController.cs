@@ -124,7 +124,7 @@ public class QuestionsController : ControllerBase
         {
             Title = model.QuestionTitle,
             Body = model.QuestionBody,
-            CreationTime = DateTime.Now,
+            CreationTime = DateTime.UtcNow,
             UserId = userObject.Id
         };
         
@@ -165,7 +165,7 @@ public class QuestionsController : ControllerBase
 
         question.Title = model.QuestionTitle;
         question.Body = model.QuestionBody;
-        question.UpdateTime = DateTime.Now;
+        question.UpdateTime = DateTime.UtcNow;
         _questionService.UpdateQuestion(question);
         
         
