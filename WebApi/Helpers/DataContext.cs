@@ -20,26 +20,27 @@ public class DataContext : IdentityDbContext <IdentityUser<int>,IdentityRole<int
     public DbSet<Question> Questions { get; set; }   
     public DbSet<Answer> Answers { get; set; }
     public DbSet<QuestionTag> QuestionTags { get; set; }
-   
+    public DbSet<Interest> Interests { get; set; }
+    public DbSet<Vote> Votes { get; set; }
+    public DbSet<Request> Requests { get; set; }
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<Group> Groups { get; set; }
+    public DbSet<participation> Participations { get; set; }
+    public DbSet<Review> Reviews { get; set; }
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        
         //Question & answer one to many relation 
         modelBuilder.Entity<Answer>()
             .HasOne(a => a.Question)
             .WithMany(b => b.Answers);
         
-        
-        //Question and Tag many to many relation 
+        //Question Tag many to many relation
         modelBuilder.Entity<QuestionTag>()
-            .HasOne(q => q.Tag)
-            .WithMany(qt => qt.QuestionTags)
-            .HasForeignKey(q => q.QuestionId);
-        
-        modelBuilder.Entity<QuestionTag>()
-            .HasOne(t => t.Tag)
-            .WithMany(qt => qt.QuestionTags)
-            .HasForeignKey(q => q.TagId);
+            .HasKey(qt => new {qt.QuestionId, qt.TagId});
         
         //User Question one to many relation
         modelBuilder.Entity<Question>()
@@ -51,13 +52,30 @@ public class DataContext : IdentityDbContext <IdentityUser<int>,IdentityRole<int
             .HasOne(u => u.User)
             .WithMany(a => a.Answers);
         
-        //User Tag one to many relation 
-        modelBuilder.Entity<Tag>()
-            .HasOne(u => u.User)
-            .WithMany(a => a.Tags);
-    
+        //Has Interest relation
+        modelBuilder.Entity<Interest>().HasKey(i => new {i.UserId, i.TagId});
+        
+        // Vote relation 
+        modelBuilder.Entity<Vote>().HasKey(v => new {v.UserId, v.AnswerId});
+        
+        // Request relation 
+        modelBuilder.Entity<Request>()
+            .HasOne(r => r.User)
+            .WithMany(u => u.Requests)
+            .HasForeignKey(r => r.UserId);
+        modelBuilder.Entity<Request>()
+            .HasOne(r => r.User)
+            .WithMany(u => u.Requests)
+            .HasForeignKey(r => r.MentorId);
+        
+        // User Group relation
+        modelBuilder.Entity<participation>()
+            .HasKey(p => new {p.UserId, p.GroupId});
+        
+        // Review relation 
+        modelBuilder.Entity<Review>()
+            .HasKey(r => new {r.UserId, r.RevieweeId});
     }
-
-   
+    
     
 }

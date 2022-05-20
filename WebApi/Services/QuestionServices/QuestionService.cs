@@ -135,21 +135,23 @@ public class QuestionService : IQuestionService
     {
         var question = await _context.Questions
             .Where(question => question.Id == questionId)
-            .Select(question => new {
+            .Select(question => new
+            {
                 question_id = question.Id,
                 question_title = question.Title,
                 question_body = question.Body,
                 creation_time = question.CreationTime,
                 update_time = question.UpdateTime,
                 is_banned = question.IsBanned,
-                tags = question.QuestionTags.Select(t => new { t.TagId, t.Tag.Name }),
+                tags = question.QuestionTags.Select(t => new {t.TagId, t.Tag.Name}),
                 owner = new
                 {
                     user_id = question.User.Id,
                     user_first_name = question.User.FirstName,
                     user_last_name = question.User.LastName
                 },
-                answers = question.Answers.Select(a=> new {
+                answers = question.Answers.Select(a => new
+                {
                     answer_id = a.Id,
                     answer_body = a.Body,
                     owner = new
@@ -164,7 +166,6 @@ public class QuestionService : IQuestionService
 
             })
             .ToListAsync();
-        
         return question;
     }
 

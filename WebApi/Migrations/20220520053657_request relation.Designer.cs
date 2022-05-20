@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Helpers;
 
@@ -11,9 +12,10 @@ using WebApi.Helpers;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220520053657_request relation")]
+    partial class requestrelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,31 +269,6 @@ namespace WebApi.Migrations
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("WebApi.Entities.Group", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("GroupName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("JitsiRoomId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Groups");
-                });
-
             modelBuilder.Entity("WebApi.Entities.Interest", b =>
                 {
                     b.Property<int>("UserId")
@@ -305,53 +282,6 @@ namespace WebApi.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("Interests");
-                });
-
-            modelBuilder.Entity("WebApi.Entities.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MessageBody")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("WebApi.Entities.participation", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "GroupId");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("Participations");
                 });
 
             modelBuilder.Entity("WebApi.Entities.Question", b =>
@@ -429,27 +359,6 @@ namespace WebApi.Migrations
                     b.HasIndex("MentorId1");
 
                     b.ToTable("Requests");
-                });
-
-            modelBuilder.Entity("WebApi.Entities.Review", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RevieweeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReviewBody")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "RevieweeId");
-
-                    b.HasIndex("RevieweeId");
-
-                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("WebApi.Entities.Tag", b =>
@@ -623,44 +532,6 @@ namespace WebApi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WebApi.Entities.Message", b =>
-                {
-                    b.HasOne("WebApi.Entities.Group", "Group")
-                        .WithMany("Messages")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApi.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WebApi.Entities.participation", b =>
-                {
-                    b.HasOne("WebApi.Entities.Group", "Group")
-                        .WithMany("Participated")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApi.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("WebApi.Entities.Question", b =>
                 {
                     b.HasOne("WebApi.Entities.User", "User")
@@ -708,25 +579,6 @@ namespace WebApi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WebApi.Entities.Review", b =>
-                {
-                    b.HasOne("WebApi.Entities.User", "Reviewee")
-                        .WithMany()
-                        .HasForeignKey("RevieweeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApi.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reviewee");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("WebApi.Entities.Tag", b =>
                 {
                     b.HasOne("WebApi.Entities.User", null)
@@ -756,13 +608,6 @@ namespace WebApi.Migrations
             modelBuilder.Entity("WebApi.Entities.Answer", b =>
                 {
                     b.Navigation("Votes");
-                });
-
-            modelBuilder.Entity("WebApi.Entities.Group", b =>
-                {
-                    b.Navigation("Messages");
-
-                    b.Navigation("Participated");
                 });
 
             modelBuilder.Entity("WebApi.Entities.Question", b =>

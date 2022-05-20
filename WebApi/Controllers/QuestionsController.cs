@@ -37,12 +37,16 @@ public class QuestionsController : ControllerBase
     }
 
     [HttpGet]
-    
     //if there is no question return no questions yet!
     public async Task<IActionResult> GetAllQuestions([FromQuery]PaginationParams @params)
     {
-        var paginationMetaData =  new PaginationMetaData( @params.Page,await _questionService.GetCount(), @params.ItemPerPage);
+        var count = await _questionService.GetCount();
+        var paginationMetaData =  new PaginationMetaData( @params.Page,count, @params.ItemPerPage);
         Response.Headers.Add("X-pagination",JsonSerializer.Serialize(paginationMetaData));
+
+        if (count == 0)
+            return NoContent();
+        
         var questions =  await _questionService.GetAllQuestions(@params);
         return Ok(questions);
     }
@@ -50,13 +54,18 @@ public class QuestionsController : ControllerBase
     [HttpGet("GetAllQuestionsByUser/{userId}")]
     public  async Task<IActionResult> GetAllQuestionsByUserId(int userId, [FromQuery]PaginationParams @params)
     {
+        var count = await _questionService.GetCountUserId(userId);
         var user = _userService.GetById(userId);
-        if (user == null)
-            return NotFound();
-       
         
-        var paginationMetaData =  new PaginationMetaData( @params.Page,await _questionService.GetCountUserId(userId), @params.ItemPerPage);
+        if (user == null)
+            return NotFound("No user was found!");
+
+        var paginationMetaData =  new PaginationMetaData( @params.Page, count, @params.ItemPerPage);
         Response.Headers.Add("X-pagination",JsonSerializer.Serialize(paginationMetaData));
+
+        if (count == 0)
+            return NoContent();
+        
         var questions = await _questionService.GetAllQuestionsByUserId(userId, @params);
         return Ok(questions);
     }
@@ -64,11 +73,18 @@ public class QuestionsController : ControllerBase
     [HttpGet("GetAllQuestionsByTag/{tagId}")]
     public async Task<IActionResult> GetAllQuestionsByTagId(int tagId, [FromQuery]PaginationParams @params)
     {
+        var count = await _questionService.GetCountTagId(tagId);
         var tag = await _tagService.CheckIfTagExists(tagId);
+        
         if (tag == null)
             return NotFound("Tag is not found!");
-        var paginationMetaData =  new PaginationMetaData( @params.Page,await _questionService.GetCountTagId(tagId), @params.ItemPerPage);
+        
+        var paginationMetaData =  new PaginationMetaData( @params.Page, count, @params.ItemPerPage);
         Response.Headers.Add("X-pagination",JsonSerializer.Serialize(paginationMetaData));
+        
+        if (count == 0)
+            return NoContent();
+
         var questions = await _questionService.GetAllQuestionsByTagId(tagId,@params);
         return Ok(questions);
     }
@@ -81,7 +97,7 @@ public class QuestionsController : ControllerBase
         if (checkQuestion == null)
             return NotFound("Question is not found!");
 
-        var question = await _questionService.GetQuestionById(questionId);
+        var question =  await _questionService.GetQuestionById(questionId);
 
         return Ok(question);
     }

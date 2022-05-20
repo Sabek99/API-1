@@ -58,8 +58,6 @@ public class TagsController : ControllerBase
         {
             Name = model.Name,
             Description = model.Description,
-            User = userObject,
-            UserId = userObject.Id
         };
 
         await _tagService.CreateTag(tag);
@@ -78,9 +76,6 @@ public class TagsController : ControllerBase
 
         if (tag == null)
             return NotFound("Tag is not found");
-
-        if (tag.UserId != userObject.Id)
-            return BadRequest("Not allowed!");
         
         tag.Name = model.Name;
         tag.Description = model.Description;
@@ -101,12 +96,9 @@ public class TagsController : ControllerBase
             return NotFound("User is not found!");
         
         var tag = await _tagService.CheckIfTagExists(tagId);
-        
+
         if (tag == null)
             return NotFound("Tag is not found");
-
-        if (tag.UserId != userObject.Id)
-            return BadRequest("Not allowed!");
 
         _tagService.DeleteTag(tag);
 
