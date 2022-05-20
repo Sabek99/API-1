@@ -1,12 +1,4 @@
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.IdentityModel.Tokens;
-using NuGet.Common;
 
 namespace WebApi.Services;
 
@@ -16,9 +8,7 @@ using Authorization;
 using Entities;
 using Helpers;
 using Models.Users;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using System.Security.Claims;
+
 
 public class UserService : IUserService
 {
@@ -86,7 +76,7 @@ public class UserService : IUserService
         var user = _mapper.Map<User>(model);
         // hash password
         user.PasswordHash = BCrypt.HashPassword(model.Password);
-        user.CreationTimestamp = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
+        user.CreationTime = DateTime.UtcNow;
         // save user
         _context.AspNetUsers.Add(user);
         _context.SaveChanges();
@@ -114,7 +104,7 @@ public class UserService : IUserService
         if (!string.IsNullOrEmpty(model.Password))
             user.PasswordHash = BCrypt.HashPassword(model.Password);
         
-        user.UpdateTimestamp = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
+        user.UpdateTime = DateTime.UtcNow;
 
         // copy model to user and save
         _mapper.Map(model, user);

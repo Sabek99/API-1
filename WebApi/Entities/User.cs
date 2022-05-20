@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using MessagePack;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 namespace WebApi.Entities;
 
 
-public class User:IdentityUser<int>
+public class User : IdentityUser<int>
 {
     public string Token { get; set; }
     public string FirstName { get; set; }
@@ -24,16 +25,25 @@ public class User:IdentityUser<int>
     
     public DateTime Birthdate { get; set; }
     
-    public string CreationTimestamp { get; set; }
-    public string UpdateTimestamp { get; set; }
+    public DateTime CreationTime { get; set; }
+    public DateTime UpdateTime { get; set; }
+
+    public Role Role { get; set; }
     
-    //navigation properties 
+    //navigation properties
     public virtual ICollection<Question> Questions { get; set; }
     public virtual ICollection<Answer> Answers { get; set; }
     public virtual ICollection<Tag> Tags { get; set; }
     public virtual ICollection<Interest> Interests { get; set; }
     public virtual ICollection<Vote> Votes { get; set; }
-    public virtual ICollection<Request> Requests { get; set; }
-    [NotMapped]
-    public virtual ICollection<Review> Reviews { get; set; }
+    public ICollection<Request> Student { get; set; } = new Collection<Request>();
+    public ICollection<Request> Mentor { get; set; } = new Collection<Request>();
+   
+    public ICollection<Review> Reviewer { get; set; } = new Collection<Review>();
+    public ICollection<Review> Reviewee { get; set; } = new Collection<Review>();
+}
+public enum Role
+{
+    Student,
+    Mentor
 }

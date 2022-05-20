@@ -5,10 +5,16 @@ namespace WebApi.Entities;
 
 public class Request
 {
+    [Key]
     public int Id { get; set; }
-    public virtual User User { get; set; }
-    public int UserId { get; set; }
-    public virtual User Mentor { get; set; }
+    
+    public User Student { get; set; }
+    public int StudentId { get; set; }
+    
+    
+    public User Mentor { get; set; }
     public int MentorId { get; set; }
+    
+    
     public string RequestBody { get; set; }
 }

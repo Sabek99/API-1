@@ -15,6 +15,7 @@ public class DataContext : IdentityDbContext <IdentityUser<int>,IdentityRole<int
     {
         
     }
+    
     public DbSet<User> AspNetUsers { get; set; }
     public DbSet<Tag> Tags { get; set; }   
     public DbSet<Question> Questions { get; set; }   
@@ -60,13 +61,19 @@ public class DataContext : IdentityDbContext <IdentityUser<int>,IdentityRole<int
         
         // Request relation 
         modelBuilder.Entity<Request>()
-            .HasOne(r => r.User)
-            .WithMany(u => u.Requests)
-            .HasForeignKey(r => r.UserId);
+            .HasKey(ru => new { ru.StudentId, ru.MentorId});
+        
         modelBuilder.Entity<Request>()
-            .HasOne(r => r.User)
-            .WithMany(u => u.Requests)
-            .HasForeignKey(r => r.MentorId);
+            .HasOne(r => r.Student)
+            .WithMany(u => u.Mentor)
+            .HasForeignKey(r => r.StudentId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<Request>()
+            .HasOne(r => r.Mentor)
+            .WithMany(u => u.Student)
+            .HasForeignKey(r => r.MentorId)
+            .OnDelete(DeleteBehavior.Restrict);
         
         // User Group relation
         modelBuilder.Entity<participation>()
@@ -74,7 +81,19 @@ public class DataContext : IdentityDbContext <IdentityUser<int>,IdentityRole<int
         
         // Review relation 
         modelBuilder.Entity<Review>()
-            .HasKey(r => new {r.UserId, r.RevieweeId});
+            .HasKey(ru => new { ru.RevieweeId, ru.ReviewerId});
+        
+        modelBuilder.Entity<Review>()
+            .HasOne(r => r.Reviewee)
+            .WithMany(u => u.Reviewer)
+            .HasForeignKey(r => r.RevieweeId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<Review>()
+            .HasOne(r => r.Reviewer)
+            .WithMany(u => u.Reviewee)
+            .HasForeignKey(r => r.ReviewerId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
     
     
