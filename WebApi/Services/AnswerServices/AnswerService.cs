@@ -25,8 +25,6 @@ public class AnswerService : IAnswerService
             {
                 answer_id = answer.Id,
                 answer_body = answer.Body,
-                answer_upvote = answer.UpVote,
-                answer_downvote = answer.DownVote,
                 creation_time = answer.CreationTime,
                 update_time = answer.UpdateTime,
                 is_banned = answer.IsBanned,

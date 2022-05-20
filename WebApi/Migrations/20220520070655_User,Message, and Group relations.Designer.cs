@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Helpers;
 
@@ -11,9 +12,10 @@ using WebApi.Helpers;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220520070655_User,Message, and Group relations")]
+    partial class UserMessageandGrouprelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -431,27 +433,6 @@ namespace WebApi.Migrations
                     b.ToTable("Requests");
                 });
 
-            modelBuilder.Entity("WebApi.Entities.Review", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RevieweeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReviewBody")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "RevieweeId");
-
-                    b.HasIndex("RevieweeId");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("WebApi.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -704,25 +685,6 @@ namespace WebApi.Migrations
                         .HasForeignKey("MentorId1");
 
                     b.Navigation("Mentor");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WebApi.Entities.Review", b =>
-                {
-                    b.HasOne("WebApi.Entities.User", "Reviewee")
-                        .WithMany()
-                        .HasForeignKey("RevieweeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApi.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reviewee");
 
                     b.Navigation("User");
                 });

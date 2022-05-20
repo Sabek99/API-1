@@ -31,5 +31,9 @@ public class User:IdentityUser<int>
     public virtual ICollection<Question> Questions { get; set; }
     public virtual ICollection<Answer> Answers { get; set; }
     public virtual ICollection<Tag> Tags { get; set; }
-    
+    public virtual ICollection<Interest> Interests { get; set; }
+    public virtual ICollection<Vote> Votes { get; set; }
+    public virtual ICollection<Request> Requests { get; set; }
+    [NotMapped]
+    public virtual ICollection<Review> Reviews { get; set; }
 }
