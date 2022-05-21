@@ -33,7 +33,6 @@ public class User : IdentityUser<int>
     //navigation properties
     public virtual ICollection<Question> Questions { get; set; }
     public virtual ICollection<Answer> Answers { get; set; }
-    public virtual ICollection<Tag> Tags { get; set; }
     public virtual ICollection<Interest> Interests { get; set; }
     public virtual ICollection<Vote> Votes { get; set; }
     public ICollection<Request> Student { get; set; } = new Collection<Request>();

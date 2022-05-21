@@ -28,7 +28,7 @@ public class TagsController : ControllerBase
         var tags =  _tagService.GetAllTags();
 
         if (tags == null)
-            return NotFound("There are no tags");
+            return NotFound(new {error = "Tags are not found!",status_code = 404 });
         
         return Ok(tags);
     }
@@ -39,7 +39,7 @@ public class TagsController : ControllerBase
         var checkTag =await _tagService.CheckIfTagExists(tagId);
         
         if (checkTag == null)
-            return NotFound("Tag is not found");
+            return NotFound(new {error = "Tag is not found!",status_code = 404 });
         
         var tag = _tagService.GetTagById(tagId);
         return Ok(tag);
@@ -51,13 +51,16 @@ public class TagsController : ControllerBase
         var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
         
         if (userObject == null)
-            return NotFound("User is not found!");
+            return NotFound(new {error = "User is not found!",status_code = 404 });
         
-        if (string.IsNullOrWhiteSpace(model.Name)) return BadRequest("tag name is required!");
+        if (string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.Description)) 
+            return BadRequest(new {error = "Tag name and description are required!",status_code = 400 });
+        
         var tag =  new Tag
         {
             Name = model.Name,
             Description = model.Description,
+            CreationTime = DateTime.UtcNow
         };
 
         await _tagService.CreateTag(tag);
@@ -70,18 +73,19 @@ public class TagsController : ControllerBase
         var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
         
         if (userObject == null)
-            return NotFound("User is not found!");
+            return NotFound(new {error = "User is not found!",status_code = 404 });
         
         var tag = await _tagService.CheckIfTagExists(tagId);
 
         if (tag == null)
-            return NotFound("Tag is not found");
+            return NotFound(new {error = "Tag is not found!",status_code = 404 });
+        
+        if(string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.Description))
+            return  BadRequest(new {error = "Tag name and description are required!",status_code = 400 });
         
         tag.Name = model.Name;
         tag.Description = model.Description;
-           
-        if(string.IsNullOrWhiteSpace(model.Name))
-            return BadRequest("tag name is required!"); 
+        tag.UpdateTime = DateTime.UtcNow;
                    
         _tagService.UpdateTag(tag);
         return Ok(_tagService.GetTagById(tag.Id));
@@ -93,12 +97,12 @@ public class TagsController : ControllerBase
         var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
         
         if (userObject == null)
-            return NotFound("User is not found!");
+            return NotFound(new {error = "User is not found!",status_code = 404 });
         
         var tag = await _tagService.CheckIfTagExists(tagId);
 
         if (tag == null)
-            return NotFound("Tag is not found");
+            return NotFound(new {error = "Tag is not found!",status_code = 404 });
 
         _tagService.DeleteTag(tag);
 
