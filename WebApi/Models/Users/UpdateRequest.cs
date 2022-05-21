@@ -1,3 +1,5 @@
+using WebApi.Entities;
+
 namespace WebApi.Models.Users;
 
 public class UpdateRequest
@@ -19,5 +21,6 @@ public class UpdateRequest
     public string College { get; set; }
     
     public string Major { get; set; }
+    public Role Role { get; set; }
     
 }

@@ -30,7 +30,7 @@ public class AnswersController : ControllerBase
         var answer = await _answerService.GetAnswerById(answerId);
         
         if (answer == null)
-            return NotFound("Answer is not found!");
+            return NotFound(new {error = "Answer is not found!",status_code = 404 });
         
         return Ok(await _answerService.GetTheAnswer(answerId));
     }
@@ -43,13 +43,16 @@ public class AnswersController : ControllerBase
         var question = await _questionService.CheckIfQuestionExists(questionId);
         
         if (userObject == null)
-            return NotFound("User is not found!");
+            return NotFound(new {error = "User is not found!",status_code = 404 });
         
         if (question == null)
-            return NotFound("question is not found!");
+            return NotFound(new {error = "Question is not found!",status_code = 404 });
+
+        if (userObject.Role != Role.Mentor)
+            return BadRequest(new {error = "you are not allowed!",status_code = 400 });
 
         if (string.IsNullOrWhiteSpace(model.Body))
-            return BadRequest("Answer body is required");
+            return BadRequest(new {error = "Answer body is required!",status_code = 400 });
 
         var answer = new Answer
         {
@@ -73,16 +76,16 @@ public class AnswersController : ControllerBase
         var answer = await _answerService.GetAnswerById(answerId);
 
         if (answer == null)
-            return NotFound("answer is not found!");
+            return NotFound(new {error = "Answer is not found!",status_code = 404 });
         
         if (userObject == null)
-            return NotFound("User is not found!");
+            return NotFound(new {error = "User is not found!",status_code = 404 });
         
         if (answer.UserId != userObject.Id)
-            return BadRequest("Not Allowed!");
+            return BadRequest(new {error = "you are not allowed!",status_code = 400 });
 
         if (string.IsNullOrWhiteSpace(model.Body))
-            return BadRequest("answer Body is required!");
+            return BadRequest(new {error = "Answer body is required!",status_code = 400 });
 
 
         answer.Body = model.Body;
@@ -98,15 +101,15 @@ public class AnswersController : ControllerBase
         var userObject =  (User) _httpContextAccessor.HttpContext?.Items["User"];
         
         if (userObject == null)
-            return NotFound("User is not found!");
+            return NotFound(new {error = "User is not found!",status_code = 404 });
         
         var answer = await _answerService.GetAnswerById(answerId);
         
         if (answer == null)
-            return NotFound("answer is not found!");
+            return NotFound(new {error = "Answer is not found!",status_code = 404 });
 
         if (answer.UserId != userObject.Id)
-            return BadRequest("Not allowed!");
+            return BadRequest(new {error = "you are not allowed!",status_code = 400 });
         
         _answerService.DeleteAnswer(answer);
         return Ok("Answer is deleted!");
