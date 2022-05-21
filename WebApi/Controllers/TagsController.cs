@@ -5,7 +5,7 @@ using WebApi.Models.Tags;
 using WebApi.Services;
 using WebApi.Services.TageServices;
 
-[Authorize]
+[Authorize(Role.Mentor)]
 [Route("api/[controller]")]
 [ApiController]
 public class TagsController : ControllerBase
