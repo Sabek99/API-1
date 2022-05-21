@@ -28,6 +28,8 @@ public class TagService : ITagService
                 tag_id = tag.Id,
                 tag_name = tag.Name,
                 tag_description = tag.Description,
+                creation_time = tag.CreationTime,
+                update_time = tag.UpdateTime,
                 number_of_questions = tag.QuestionTags.Count
             };
         return query;
@@ -42,6 +44,8 @@ public class TagService : ITagService
                 tag_id = tag.Id,
                 tag_name = tag.Name,
                 tag_description = tag.Description,
+                creation_time = tag.CreationTime,
+                update_time = tag.UpdateTime,
                 number_of_questions = tag.QuestionTags.Count
             };
         return query;

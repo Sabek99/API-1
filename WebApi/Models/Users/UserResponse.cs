@@ -1,3 +1,5 @@
+using WebApi.Entities;
+
 namespace WebApi.Models.Users;
 
 public class UserResponse 
@@ -17,7 +19,8 @@ public class UserResponse
     public string College { get; set; }
     
     public string Major { get; set; }
-    
+
+    public Role Role { get; set; }
     public DateTime Birthdate { get; set; }
     
     public string CreationTimestamp { get; set; }

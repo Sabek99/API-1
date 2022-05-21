@@ -39,7 +39,6 @@ public class UserService : IUserService
         // validate
         if (user == null || !BCrypt.Verify(model.Password, user.PasswordHash))
             throw new AppException("Username or password is incorrect");
-
         
 
         // authentication successful
@@ -69,8 +68,12 @@ public class UserService : IUserService
         // validate
         if (_context.AspNetUsers.Any(x => x.Email == model.Email))
             throw new AppException("Email '" + model.Email + "' is already taken");
+        
         if (_context.AspNetUsers.Any(x => x.UserName == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
+        
+        if (model.Role != Role.Mentor && model.Role != Role.Student)
+            throw new AppException("Role: " + model.Role + " is not valid");
         
         // map model to new user object
         var user = _mapper.Map<User>(model);
@@ -95,10 +98,15 @@ public class UserService : IUserService
     {
         var user = (User) _httpContextAccessor.HttpContext?.Items["User"];
         
+        if (user == null)
+            throw new AppException("User is not found!");
 
         // validate
         if (model.Username != user.UserName && _context.AspNetUsers.Any(x => x.UserName == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
+        
+        if (model.Role != Role.Mentor && model.Role != Role.Student)
+            throw new AppException("Role: " + model.Role + " is not valid");
 
         // hash password if it was entered
         if (!string.IsNullOrEmpty(model.Password))
