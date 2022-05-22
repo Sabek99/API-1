@@ -110,9 +110,6 @@ public class QuestionsController : ControllerBase
         if (userObject == null)
             return NotFound(new {error = "User is not found!",status_code = 404 });
 
-        if (userObject.Role != Role.Student)
-            return BadRequest(new {error = "you are not allowed!",status_code = 400 });
-        
         if (string.IsNullOrWhiteSpace(model.QuestionTitle) || string.IsNullOrWhiteSpace(model.QuestionBody))
             return BadRequest(new {error = "Title and body are required!",status_code = 400 });
 
@@ -187,10 +184,10 @@ public class QuestionsController : ControllerBase
         var question = await _questionService.CheckIfQuestionExists(questionId);
         
         if (question == null)
-            return NotFound(new {Error = "Question is not found!", status_dode = 404 });
+            return NotFound(new {Error = "Question is not found!", status_code = 404 });
 
         if (question.UserId != userObject.Id)
-            return BadRequest("Not allowed!");
+            return BadRequest(new {Error = "Not allowed!", status_code = 400 });
         
         _questionService.DeleteQuestion(question);
         return Ok("Question has been deleted!");

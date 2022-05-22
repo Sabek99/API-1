@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Globalization;
 
 namespace WebApi.Services;
@@ -58,6 +59,50 @@ public class UserService : IUserService
         return response;
     }
 
+    public IEnumerable<RequestResponse> GetRequests()
+    {
+        var user = (User) _httpContextAccessor.HttpContext?.Items["User"];
+        
+        var request =user?.Role == Role.Mentor?
+            //get requests assigned to mentor
+            _context.Requests.ToList()
+                .Where(u => u.MentorId == user.Id)
+            :
+            //get requests assigned to student
+            _context.Requests.ToList()
+                .Where(u => u.StudentId == user.Id);
+        
+        //map from request to request response
+        var response = _mapper.Map<IEnumerable<RequestResponse>>(request);
+
+
+        return response ;
+    }
+    
+    // var request = _context.Requests.ToList().Select(m => new
+    // {
+    //    SentRequest = new
+    //    {
+    //        m.Id,
+    //        m.RequestBody,
+    //        mentor = new
+    //        {
+    //            userID= m.Mentor.Id,
+    //            FirstName = m.Mentor.FirstName,
+    //        }
+    //    },
+    //    Receivedrequest = new
+    //    {
+    //        m.Id,
+    //        m.RequestBody,
+    //        student = new
+    //        {
+    //            userID= m.Student.Id,
+    //            FirstName = m.Student.FirstName,
+    //        }
+    //    }
+    // });
+
     public User GetById(int id)
     {
         return GetUser(id);
@@ -71,10 +116,7 @@ public class UserService : IUserService
         
         if (_context.AspNetUsers.Any(x => x.UserName == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
-        
-        if (model.Role != Role.Mentor && model.Role != Role.Student)
-            throw new AppException("Role: " + model.Role + " is not valid");
-        
+
         // map model to new user object
         var user = _mapper.Map<User>(model);
         // hash password
@@ -93,6 +135,7 @@ public class UserService : IUserService
         // return user's token to client 
         return response;
     }
+    
 
     public void Update(UpdateRequest model)
     {
@@ -105,8 +148,6 @@ public class UserService : IUserService
         if (model.Username != user.UserName && _context.AspNetUsers.Any(x => x.UserName == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
         
-        if (model.Role != Role.Mentor && model.Role != Role.Student)
-            throw new AppException("Role: " + model.Role + " is not valid");
 
         // hash password if it was entered
         if (!string.IsNullOrEmpty(model.Password))
@@ -146,5 +187,6 @@ public class UserService : IUserService
 
         _context.SaveChanges();
     }
+    
     
 }

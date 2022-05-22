@@ -44,5 +44,6 @@ public class User : IdentityUser<int>
 public enum Role
 {
     Student,
-    Mentor
+    Mentor,
+    Admin
 }

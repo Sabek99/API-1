@@ -1,4 +1,5 @@
-﻿using WebApi.Entities;
+﻿using System.Collections;
+using WebApi.Entities;
 using WebApi.Models.Users;
 
 namespace WebApi.Services;
@@ -7,6 +8,9 @@ public interface IUserService
 {
     AuthenticateResponse Authenticate(AuthenticateRequest model);
     RegisterResponse Register(RegisterRequest model);
+
+    IEnumerable<RequestResponse> GetRequests();
+    
     IEnumerable<UserResponse> GetAll();
     User GetById(int id);
     //void Register(RegisterRequest model);

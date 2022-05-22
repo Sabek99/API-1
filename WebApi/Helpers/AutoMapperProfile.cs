@@ -18,6 +18,8 @@ public class AutoMapperProfile : Profile
         
         CreateMap<User,UserResponse>();
 
+        CreateMap<Request, RequestResponse>();
+
         // UpdateRequest -> User
         CreateMap<UpdateRequest, User>()
             .ForAllMembers(x => x.Condition(
