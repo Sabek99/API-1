@@ -189,7 +189,7 @@ public class QuestionsController : ControllerBase
             return NotFound(new {Error = "Question is not found!", status_dode = 404 });
 
         if (question.UserId != userObject.Id)
-            return BadRequest("Not allowed!");
+            return BadRequest(new {error = "You are not allowed!",status_code = 400 });
         
         _questionService.DeleteQuestion(question);
         return Ok("Question has been deleted!");

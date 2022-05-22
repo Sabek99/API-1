@@ -105,6 +105,27 @@ namespace WebApi.Controllers
             
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteRequest(int requestId)
+        {
+            var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
+
+            if (userObject == null)
+                return NotFound(new {error = "User is not found!",status_code = 404 });
+
+            var request = await _requestService.CheckIfTheRequestExists(requestId);
+            
+            if (request == null)
+                return NotFound(new {error = "Request is not found!",status_code = 404 });
+            
+            if(request.StudentId != userObject.Id)
+                return BadRequest(new {error = "You are not allowed!",status_code = 400 });
+
+            _requestService.DeleteRequest(request);
+            return Ok("Request has been deleted");
+
+        }
+
 
     }
     
