@@ -22,5 +22,7 @@ public class UpdateRequest
     
     public string Major { get; set; }
     public Role Role { get; set; }
+
+    public DateTime Birthdate { get; set; }
     
 }

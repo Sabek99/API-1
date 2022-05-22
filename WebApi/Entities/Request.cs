@@ -20,6 +20,6 @@ public class Request
 public enum Status
 {
     OnHold,
-    Accepted,
-    Rejected
+    Rejected,
+    Accepted
 }

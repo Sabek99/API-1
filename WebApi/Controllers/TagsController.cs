@@ -5,7 +5,7 @@ using WebApi.Models.Tags;
 using WebApi.Services;
 using WebApi.Services.TageServices;
 
-[Authorize]
+
 [Route("api/[controller]")]
 [ApiController]
 public class TagsController : ControllerBase
@@ -13,8 +13,7 @@ public class TagsController : ControllerBase
     private readonly ITagService _tagService;
     private readonly IUserService _userService;
     private readonly IHttpContextAccessor _httpContextAccessor;
-
-
+    
     public TagsController(ITagService tagService, IUserService userService, IHttpContextAccessor httpContextAccessor)
     {
         _tagService = tagService;
@@ -23,6 +22,7 @@ public class TagsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public  IActionResult GetAllTags()
     {
         var tags =  _tagService.GetAllTags();
@@ -46,6 +46,7 @@ public class TagsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Role.Admin)]
     public async Task<IActionResult> CreateTag(BaseTagModel model)
     {
         var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
@@ -68,6 +69,8 @@ public class TagsController : ControllerBase
     }
 
     [HttpPut("{tagId}")]
+    [Authorize(Role.Admin)]
+
     public async Task<IActionResult> UpdateTag(int tagId, BaseTagModel model)
     {
         var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
@@ -92,6 +95,7 @@ public class TagsController : ControllerBase
     }
 
     [HttpDelete("{tagId}")]
+    [Authorize(Role.Admin)]
     public async Task<IActionResult> DeleteTag(int tagId)
     {
         var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];

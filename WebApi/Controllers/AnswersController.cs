@@ -35,6 +35,7 @@ public class AnswersController : ControllerBase
         return Ok(await _answerService.GetTheAnswer(answerId));
     }
 
+    [Authorize(Role.Mentor)]
     [HttpPost("{questionId}")]
     public async Task<IActionResult> CreateAnswer(int questionId, BaseAnswerModel model)
     {
@@ -47,9 +48,6 @@ public class AnswersController : ControllerBase
         
         if (question == null)
             return NotFound(new {error = "Question is not found!",status_code = 404 });
-
-        if (userObject.Role != Role.Mentor)
-            return BadRequest(new {error = "you are not allowed!",status_code = 400 });
 
         if (string.IsNullOrWhiteSpace(model.Body))
             return BadRequest(new {error = "Answer body is required!",status_code = 400 });
@@ -67,7 +65,8 @@ public class AnswersController : ControllerBase
         await _answerService.CreateAnswer(answer);
         return Ok(await _answerService.GetTheAnswer(answer.Id));
     }
-
+    
+    
     [HttpPut("{answerId}")]
     public async Task<IActionResult> UpdateAnswer(int answerId, BaseAnswerModel model)
     {
@@ -94,7 +93,8 @@ public class AnswersController : ControllerBase
         _answerService.UpdateAnswer(answer);
         return Ok(await _answerService.GetTheAnswer(answerId));
     }
-
+    
+    
     [HttpDelete("{answerId}")]
     public async Task<IActionResult> DeleteAnswer(int answerId)
     {

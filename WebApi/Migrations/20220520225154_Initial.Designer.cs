@@ -12,7 +12,7 @@ using WebApi.Helpers;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220520222021_Initial")]
+    [Migration("20220520225154_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -478,7 +478,7 @@ namespace WebApi.Migrations
                     b.Property<int>("AnswerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("VoteType")
+                    b.Property<int>("Count")
                         .HasColumnType("int");
 
                     b.HasKey("UserId", "AnswerId");

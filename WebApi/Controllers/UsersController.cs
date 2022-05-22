@@ -10,7 +10,6 @@ using WebApi.Helpers;
 using WebApi.Models.Users;
 using WebApi.Services;
 
-[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
@@ -28,7 +27,7 @@ public class UsersController : ControllerBase
         _httpContextAccessor = httpContextAccessor;
     }
 
-    [AllowAnonymous]
+ 
     [HttpPost("authenticate")]
     public IActionResult Authenticate(AuthenticateRequest model)
     {
@@ -43,7 +42,8 @@ public class UsersController : ControllerBase
         return Ok(new { message = "Signed out successfully, hope to see you soon!" });
     }
 
-    [AllowAnonymous]
+    
+  
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest model)
     {
@@ -51,13 +51,14 @@ public class UsersController : ControllerBase
         return Ok(response);
     }
 
+    
     [HttpGet]
     public IActionResult GetAll()
     {
         var users = _userService.GetAll();
         return Ok(users);
     }
-
+    
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {
@@ -65,7 +66,7 @@ public class UsersController : ControllerBase
         var response = _mapper.Map<UserResponse>(user);
         return Ok(response);
     }
-
+    
     [HttpPut("Update")]
     public IActionResult Update(UpdateRequest model)
     {
@@ -74,7 +75,8 @@ public class UsersController : ControllerBase
         var response = _mapper.Map<UserResponse>(user);
         return Ok(response);
     }
-
+    
+    [Authorize(Role.Admin)]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
