@@ -2,5 +2,6 @@
 
 public class BsaeRequestModel
 {
-    
+    public int MentorId { get; set; }
+    public string RequestBody { get; set; }
 }

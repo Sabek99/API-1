@@ -1,4 +1,5 @@
 using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Services;
 
@@ -146,5 +147,10 @@ public class UserService : IUserService
 
         _context.SaveChanges();
     }
-    
+
+    public async Task<User> CheckUserRole(int userId)
+    {
+        return await _context.AspNetUsers
+            .SingleOrDefaultAsync(u=>(u.Id == userId && u.Role ==Role.Mentor));
+    }
 }

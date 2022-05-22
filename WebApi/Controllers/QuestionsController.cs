@@ -37,7 +37,6 @@ public class QuestionsController : ControllerBase
     }
 
     [HttpGet]
-    //if there is no question return no questions yet!
     public async Task<IActionResult> GetAllQuestions([FromQuery]PaginationParams @params)
     {
         var count = await _questionService.GetCount();

@@ -61,7 +61,7 @@ public class DataContext : IdentityDbContext <IdentityUser<int>,IdentityRole<int
         
         // Request relation 
         modelBuilder.Entity<Request>()
-            .HasKey(ru => new { ru.StudentId, ru.MentorId});
+            .HasKey(ru =>ru.Id);
         
         modelBuilder.Entity<Request>()
             .HasOne(r => r.Student)

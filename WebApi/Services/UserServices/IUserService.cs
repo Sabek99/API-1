@@ -13,4 +13,8 @@ public interface IUserService
     void Update( UpdateRequest model);
     void Delete(int id);
     void SignOut();
+
+    Task<User> CheckUserRole(int userId);
+
+
 }

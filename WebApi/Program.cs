@@ -1,14 +1,5 @@
-﻿using System.Configuration;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Server.IISIntegration;
+﻿using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
 using WebApi.Authorization;
 using WebApi.Helpers;
@@ -16,6 +7,7 @@ using WebApi.Services;
 using WebApi.Services.AnswerServices;
 using WebApi.Services.QuestionServices;
 using WebApi.Services.QuestionTagServices;
+using WebApi.Services.RequestServices;
 using WebApi.Services.TageServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +16,7 @@ builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IQuestionService, QuestionService>();
 builder.Services.AddTransient<IQuestionTagService, QuestionTagService>();
 builder.Services.AddTransient<IAnswerService, AnswerService>();
+builder.Services.AddTransient<IRequestService, RequesServices>();
 
 
 void AddSwagger(IServiceCollection services)
