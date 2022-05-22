@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using WebApi.Entities;
+﻿using WebApi.Entities;
 using WebApi.Models.QuestionTag;
 
 namespace WebApi.Services.QuestionTagServices;

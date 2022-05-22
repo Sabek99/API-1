@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using WebApi.Entities;
 using WebApi.Models.Pagination;
-using WebApi.Models.Questions;
 
 namespace WebApi.Services.QuestionServices;
 

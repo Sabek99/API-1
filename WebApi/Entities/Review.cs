@@ -12,14 +12,14 @@ public class Review
     
     
     public string ReviewBody { get; set; }
-    public DateTime CreationTime { get; set; }
-    
-    public enum Stars
-    {
-        Star1=1,
-        Star2=2,
-        Star3=3,
-        Star4=4,
+        public DateTime CreationTime { get; set; }
+        
+        public enum Stars
+        {
+            Star1=1,
+            Star2=2,
+            Star3=3,
+            Star4=4,
         Star5=5
     }
 }

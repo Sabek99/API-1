@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using WebApi.Entities;
+﻿using WebApi.Entities;
 using WebApi.Models.Users;
 
 namespace WebApi.Services;
@@ -9,7 +8,7 @@ public interface IUserService
     AuthenticateResponse Authenticate(AuthenticateRequest model);
     RegisterResponse Register(RegisterRequest model);
 
-    IEnumerable<RequestResponse> GetRequests();
+    //IEnumerable<RequestResponse> GetRequests();
     
     IEnumerable<UserResponse> GetAll();
     User GetById(int id);
@@ -17,4 +16,8 @@ public interface IUserService
     void Update( UpdateRequest model);
     void Delete(int id);
     void SignOut();
+
+    Task<User> CheckUserRole(int userId);
+
+
 }

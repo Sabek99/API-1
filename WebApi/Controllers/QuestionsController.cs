@@ -37,7 +37,6 @@ public class QuestionsController : ControllerBase
     }
 
     [HttpGet]
-    //if there is no question return no questions yet!
     public async Task<IActionResult> GetAllQuestions([FromQuery]PaginationParams @params)
     {
         var count = await _questionService.GetCount();
@@ -95,7 +94,7 @@ public class QuestionsController : ControllerBase
         var checkQuestion = await _questionService.CheckIfQuestionExists(questionId);
         
         if (checkQuestion == null)
-            return NotFound("Question is not found!");
+            return NotFound(new {error = "Question is not found!",status_code = 404 });
 
         var question =  await _questionService.GetQuestionById(questionId);
 
@@ -188,6 +187,7 @@ public class QuestionsController : ControllerBase
 
         if (question.UserId != userObject.Id)
             return BadRequest(new {Error = "Not allowed!", status_code = 400 });
+
         
         _questionService.DeleteQuestion(question);
         return Ok("Question has been deleted!");
