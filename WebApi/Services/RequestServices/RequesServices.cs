@@ -91,8 +91,8 @@ public class RequesServices : IRequestService
                 student = new
                 {
                     student_id = r.Student.Id,
-                    student_first_name = r.Student.LastName,
-                    student_last_name = r.Student.FirstName
+                    student_first_name = r.Student.FirstName,
+                    student_last_name = r.Student.LastName
                 }
             }).ToListAsync();
         return request;
