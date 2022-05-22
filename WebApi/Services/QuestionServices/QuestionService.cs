@@ -57,7 +57,9 @@ public class QuestionService : IQuestionService
 
     public async Task<IEnumerable> GetAllQuestionsByUserId(int userId, PaginationParams @params)
     {
-        var questions = await _context.Questions.Select(question => new {
+        var questions = await _context.Questions
+            .Where(question => question.UserId == userId)
+            .Select(question => new {
                     question_id = question.Id,
                     question_title = question.Title,
                     question_body = question.Body,
