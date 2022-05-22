@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Authorization;
 using WebApi.Entities;
 using WebApi.Models.Answers;
-using WebApi.Services;
 using WebApi.Services.AnswerServices;
 using WebApi.Services.QuestionServices;
 
@@ -13,14 +12,12 @@ public class AnswersController : ControllerBase
 {
     private readonly IAnswerService _answerService;
     private readonly IQuestionService _questionService;
-    private readonly IUserService _userService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AnswersController(IAnswerService answerService, IQuestionService questionService, IUserService userService, IHttpContextAccessor httpContextAccessor)
+    public AnswersController(IAnswerService answerService, IQuestionService questionService, IHttpContextAccessor httpContextAccessor)
     {
         _answerService = answerService;
         _questionService = questionService;
-        _userService = userService;
         _httpContextAccessor = httpContextAccessor;
     }
 

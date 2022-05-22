@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Authorization;
 using WebApi.Entities;
 using WebApi.Models.Tags;
-using WebApi.Services;
 using WebApi.Services.TageServices;
 
 
@@ -11,13 +10,11 @@ using WebApi.Services.TageServices;
 public class TagsController : ControllerBase
 {
     private readonly ITagService _tagService;
-    private readonly IUserService _userService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     
-    public TagsController(ITagService tagService, IUserService userService, IHttpContextAccessor httpContextAccessor)
+    public TagsController(ITagService tagService, IHttpContextAccessor httpContextAccessor)
     {
         _tagService = tagService;
-        _userService = userService;
         _httpContextAccessor = httpContextAccessor;
     }
 

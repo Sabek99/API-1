@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using WebApi.Entities;
+﻿using WebApi.Entities;
 using WebApi.Models.Users;
 
 namespace WebApi.Services;

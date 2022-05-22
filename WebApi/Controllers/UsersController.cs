@@ -4,11 +4,9 @@ namespace WebApi.Controllers;
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using WebApi.Authorization;
-using WebApi.Helpers;
-using WebApi.Models.Users;
-using WebApi.Services;
+using Authorization;
+using Models.Users;
+using Services;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -16,14 +14,12 @@ public class UsersController : ControllerBase
 {
     private IUserService _userService;
     private IMapper _mapper;
-    private readonly AppSettings _appSettings;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UsersController(IUserService userService, IMapper mapper, IOptions<AppSettings> appSettings,IHttpContextAccessor httpContextAccessor)
+    public UsersController(IUserService userService, IMapper mapper,IHttpContextAccessor httpContextAccessor)
     {
         _userService = userService;
         _mapper = mapper;
-        _appSettings = appSettings.Value;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -35,8 +31,8 @@ public class UsersController : ControllerBase
         return Ok(response);
     }
     
-    [HttpPost("signout")]
-    public IActionResult signOut()
+    [HttpPost("SignOut")]
+    public IActionResult SignOut()
     {
         _userService.SignOut();
         return Ok(new { message = "Signed out successfully, hope to see you soon!" });

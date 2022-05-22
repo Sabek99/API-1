@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Services;
@@ -59,51 +57,7 @@ public class UserService : IUserService
         var response = _mapper.Map<IEnumerable<UserResponse>>(users);
         return response;
     }
-
-    // public IEnumerable<RequestResponse> GetRequests()
-    // {
-    //     var user = (User) _httpContextAccessor.HttpContext?.Items["User"];
-    //     
-    //     var request =user?.Role == Role.Mentor?
-    //         //get requests assigned to mentor
-    //         _context.Requests.ToList()
-    //             .Where(u => u.MentorId == user.Id)
-    //         :
-    //         //get requests assigned to student
-    //         _context.Requests.ToList()
-    //             .Where(u => u.StudentId == user.Id);
-    //     
-    //     //map from request to request response
-    //     var response = _mapper.Map<IEnumerable<RequestResponse>>(request);
-    //
-    //
-    //     return response ;
-    // }
     
-    // var request = _context.Requests.ToList().Select(m => new
-    // {
-    //    SentRequest = new
-    //    {
-    //        m.Id,
-    //        m.RequestBody,
-    //        mentor = new
-    //        {
-    //            userID= m.Mentor.Id,
-    //            FirstName = m.Mentor.FirstName,
-    //        }
-    //    },
-    //    Receivedrequest = new
-    //    {
-    //        m.Id,
-    //        m.RequestBody,
-    //        student = new
-    //        {
-    //            userID= m.Student.Id,
-    //            FirstName = m.Student.FirstName,
-    //        }
-    //    }
-    // });
-
     public User GetById(int id)
     {
         return GetUser(id);
