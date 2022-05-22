@@ -17,4 +17,13 @@ public class Request
     
     
     public string RequestBody { get; set; }
+    public Status Status { get; set; }
+
+
+}
+public enum Status
+{
+    OnHold,
+    Rejected,
+    Accepted
 }
