@@ -94,7 +94,7 @@ public class QuestionsController : ControllerBase
         var checkQuestion = await _questionService.CheckIfQuestionExists(questionId);
         
         if (checkQuestion == null)
-            return NotFound("Question is not found!");
+            return NotFound(new {error = "Question is not found!",status_code = 404 });
 
         var question =  await _questionService.GetQuestionById(questionId);
 

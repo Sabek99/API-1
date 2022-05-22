@@ -48,6 +48,17 @@ namespace WebApi.Controllers
             return Ok(requests);
         }
 
+        [HttpGet("GetRequestById {requestId}")]
+        public async Task<IActionResult> GetRequestById(int requestId)
+        {
+            var checkRequest = await _requestService.CheckIfTheRequestExists(requestId);
+            
+            if (checkRequest == null)
+                return NotFound(new {error = "Request is not found!",status_code = 404 });
+            
+            var request = await _requestService.GetRequestById(requestId);
+            return Ok(request);
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateRequest(BaseRequestModel model)
@@ -75,7 +86,7 @@ namespace WebApi.Controllers
 
             await _requestService.CreateRequest(request);
 
-            return Ok(request);
+            return Ok(await _requestService.GetRequestById(request.Id));
         }
 
         [HttpPut("{requestId}")]
@@ -101,7 +112,7 @@ namespace WebApi.Controllers
             request.RequestBody = model.RequestBody;
 
             _requestService.UpdateRequest(request);
-            return Ok(request);
+            return Ok(await _requestService.GetRequestById(request.Id));
             
         }
 

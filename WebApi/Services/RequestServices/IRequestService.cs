@@ -9,7 +9,8 @@ public interface IRequestService
     Task<IEnumerable> GetAllRequests();
     Task<IEnumerable> GetAllRequestsAsMentor();
     Task<IEnumerable> GetAllRequestsAsStudent();
-    
+
+    Task<IEnumerable> GetRequestById(int requestId);
     Task<Request> CreateRequest(Request request);
     Request UpdateRequest(Request request);
     Request DeleteRequest(Request request);

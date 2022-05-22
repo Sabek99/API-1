@@ -26,14 +26,14 @@ public class RequesServices : IRequestService
             {
                 mentor_id = r.Mentor.Id,
                 mentor_first_name = r.Mentor.FirstName,
-                mento_first_name = r.Mentor.LastName
+                mentor_last_name = r.Mentor.LastName
             },
             
             student = new
             {
                 student_id = r.Student.Id,
-                student_first_name  = r.Student.LastName,
-                student_last_name = r.Student.FirstName
+                student_first_name  = r.Student.FirstName,
+                student_last_name = r.Student.LastName
             }
         }).ToListAsync();
         return request;
@@ -49,8 +49,8 @@ public class RequesServices : IRequestService
             student = new
             {
                 student_id = r.Student.Id,
-                student_first_name = r.Student.LastName,
-                student_last_name = r.Student.FirstName
+                student_first_name = r.Student.FirstName,
+                student_last_name = r.Student.LastName
             }
         }).ToListAsync();
         return requests;
@@ -67,10 +67,35 @@ public class RequesServices : IRequestService
             {
                 mentor_id = r.Mentor.Id,
                 mentor_first_name = r.Mentor.FirstName,
-                mento_first_name = r.Mentor.LastName
+                mentor_last_name = r.Mentor.LastName
             }
         }).ToListAsync();
         return requests;
+    }
+
+    public async Task<IEnumerable> GetRequestById(int requestId)
+    {
+        var request = await _context.Requests
+            .Where(r => r.Id == requestId)
+            .Select(r => new
+            {
+                request_id = r.Id,
+                request_body = r.RequestBody,
+                request_status = r.Status,
+                mentor = new
+                {
+                    mentor_id = r.Mentor.Id,
+                    mentor_first_name = r.Mentor.FirstName,
+                    mentor_Last_name = r.Mentor.LastName
+                },
+                student = new
+                {
+                    student_id = r.Student.Id,
+                    student_first_name = r.Student.LastName,
+                    student_last_name = r.Student.FirstName
+                }
+            }).ToListAsync();
+        return request;
     }
 
     public async Task<Request> CreateRequest(Request request)
