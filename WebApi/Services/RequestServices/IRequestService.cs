@@ -13,5 +13,6 @@ public interface IRequestService
     Task<Request> CreateRequest(Request request);
     Request UpdateRequest(Request request);
     Request DeleteRequest(Request request);
-    
+
+    Task<Request> CheckIfTheRequestExists(int requestId);
 }

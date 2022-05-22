@@ -50,7 +50,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateRequest(BsaeRequestModel model)
+        public async Task<IActionResult> CreateRequest(BaseRequestModel model)
         {
             var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
 
@@ -76,6 +76,33 @@ namespace WebApi.Controllers
             await _requestService.CreateRequest(request);
 
             return Ok(request);
+        }
+
+        [HttpPut("{requestId}")]
+        public async Task<IActionResult> UpdateRequest(int requestId,BaseRequestModel model)
+        {
+            var userObject = (User) _httpContextAccessor.HttpContext?.Items["User"];
+
+            if (userObject == null)
+                return NotFound(new {error = "User is not found!",status_code = 404 });
+
+            var request = await _requestService.CheckIfTheRequestExists(requestId);
+            
+            if(request == null)
+                return NotFound(new {error = "Request is not found!",status_code = 404 });
+            
+            if(request.StudentId != userObject.Id)
+                return BadRequest(new {error = "You are not allowed!",status_code = 400 });
+            
+            if(string.IsNullOrWhiteSpace(model.RequestBody))
+                return BadRequest(new {error = "Request body is required!",status_code = 400 });
+
+            request.MentorId = model.MentorId;
+            request.RequestBody = model.RequestBody;
+
+            _requestService.UpdateRequest(request);
+            return Ok(request);
+            
         }
 
 

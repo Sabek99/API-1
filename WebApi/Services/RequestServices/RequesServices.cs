@@ -93,4 +93,10 @@ public class RequesServices : IRequestService
         _context.SaveChanges();
         return request;
     }
+
+    public async Task<Request> CheckIfTheRequestExists(int requestId)
+    {
+        return await _context.Requests
+            .SingleOrDefaultAsync(r => r.Id == requestId);
+    }
 }
